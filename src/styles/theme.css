@@ -2,6 +2,8 @@
 
 :root {
   --font-size: 16px;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+  "Segoe UI", sans-serif;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -138,8 +140,20 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-  }
+  @apply bg-background text-foreground;
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
 
   /**
   * Default typography styles for HTML elements (h1-h4, p, label, button, input).
