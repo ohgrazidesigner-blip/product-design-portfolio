@@ -183,7 +183,7 @@ export const caseStudies: CaseStudy[] = [
     duration: "6 weeks",
     year: "2026",
     dates: "May to June 2026",
-    category: "Product Design . UX Research",
+    category: "Product Design · UX Research",
     projectNature: "Independent redesign study",
     team: "Independent study · Sole designer",
     tools: [
@@ -260,14 +260,15 @@ export const caseStudies: CaseStudy[] = [
       ],
     },
     researchDiscovery: {
-      heading: "Building evidence through an ecosystem audit",
+      heading:
+        "Building evidence through an ecosystem audit",
       introduction:
         "This was expert-led discovery, not generative user research. I reviewed the public entry journey, analyzed one recorded authenticated walkthrough, mapped cross-platform task paths, and audited interface, content, accessibility, and system inconsistencies. The resulting findings are evidence-based design hypotheses that still require validation with students and institutional teams.",
       methods: [
         {
           title: "Public journey audit",
           description:
-            "I navigated the institutional website without assuming prior knowledge of UniFatecie's platform structure, focusing on how students locate portals, courses, services, and academic information.",
+            "I navigated the institutional website without assuming prior knowledge of UniFatecie’s platform structure, focusing on how students locate portals, courses, services, and academic information.",
           output:
             "Public entry-point analysis and an initial map of the platform ecosystem.",
         },
@@ -317,7 +318,7 @@ export const caseStudies: CaseStudy[] = [
     },
     keyFindings: {
       heading:
-        "The experience required students to understand the institution's systems before completing their goals",
+        "The experience required students to understand the institution’s systems before completing their goals",
       introduction:
         "The audit indicated that the highest-priority risks were not isolated interface defects. They emerged across platform boundaries through fragmented ownership, inconsistent terminology, unclear transitions, and the absence of a shared orientation layer.",
       findings: [
@@ -419,7 +420,7 @@ export const caseStudies: CaseStudy[] = [
         {
           title: "Reveal complexity progressively",
           explanation:
-            "Services should become prominent according to the student's current academic stage and immediate needs.",
+            "Services should become prominent according to the student’s current academic stage and immediate needs.",
           problemAddressed:
             "Academic, financial, career, promotional, and administrative services competed at the same hierarchy level.",
           influence:
@@ -508,7 +509,7 @@ export const caseStudies: CaseStudy[] = [
         {
           title: "Direct path to the first subject",
           description:
-            "The onboarding flow proposes a direct route to the student's first available subject. Its feasibility depends on authentication, enrollment data, and deep-link support in the learning platform.",
+            "The onboarding flow proposes a direct route to the student’s first available subject. Its feasibility depends on authentication, enrollment data, and deep-link support in the learning platform.",
         },
         {
           title: "Support organized by intention",
@@ -538,7 +539,7 @@ export const caseStudies: CaseStudy[] = [
           problem:
             "The existing experience did not provide a clear starting point or explain what newly enrolled students should do first.",
           response:
-            "A welcome experience introduces the academic period, confirms the student's current status, and presents the most important first actions.",
+            "A welcome experience introduces the academic period, confirms the student’s current status, and presents the most important first actions.",
           intendedEffect:
             "Help students understand where they are, what is already active, and what requires attention.",
           tradeoff:
@@ -629,7 +630,7 @@ export const caseStudies: CaseStudy[] = [
         {
           title: "Onboarding flow",
           description:
-            "The first screens establish orientation, confirm the student's academic context, and turn onboarding into a sequence of visible first-week actions.",
+            "The first screens establish orientation, confirm the student’s academic context, and turn onboarding into a sequence of visible first-week actions.",
           images: [
             {
               src: "/assets/cases/unifatecie/01-welcome.png",
@@ -849,7 +850,7 @@ export const caseStudies: CaseStudy[] = [
         {
           label: "Time to first subject",
           description:
-            "Time between account activation and successful access to the student's first class.",
+            "Time between account activation and successful access to the student’s first class.",
         },
         {
           label: "Onboarding completion",
@@ -877,7 +878,7 @@ export const caseStudies: CaseStudy[] = [
       heading:
         "Documenting what the project delivered without implying production impact",
       introduction:
-        "The project established a documented redesign direction for the student onboarding journey, supported by a task-based architecture, reusable interaction patterns, and a coded high-fidelity prototype. The outcomes below describe completed design work and the project's current status, not measured production performance.",
+        "The project established a documented redesign direction for the student onboarding journey, supported by a task-based architecture, reusable interaction patterns, and a coded high-fidelity prototype. The outcomes below describe completed design work and the project’s current status, not measured production performance.",
       deliverables: [
         {
           title: "Cross-platform ecosystem and journey map",
@@ -954,7 +955,7 @@ export const caseStudies: CaseStudy[] = [
         {
           label: "Implementation",
           description:
-            "Not implemented in UniFatecie's production environment.",
+            "Not implemented in UniFatecie’s production environment.",
         },
         {
           label: "Production outcomes",
@@ -1054,7 +1055,7 @@ export const caseStudies: CaseStudy[] = [
         "The prototype is not connected to production data, authentication, integrations, or institutional business rules",
       ],
       users:
-        "The primary audience is newly enrolled students learning how to navigate the institution's digital ecosystem. Returning students are a secondary audience for recurring academic, administrative, and support tasks.",
+        "The primary audience is newly enrolled students learning how to navigate the institution’s digital ecosystem. Returning students are a secondary audience for recurring academic, administrative, and support tasks.",
     },
     process: {
       research: [
@@ -1114,7 +1115,7 @@ export const caseStudies: CaseStudy[] = [
     },
     learnings: [
       "Onboarding in a complex ecosystem is as much about orientation as it is about task completion",
-      "Students should not need to understand an institution's internal structure to use its digital services",
+      "Students should not need to understand an institution’s internal structure to use its digital services",
       "Consistent terminology is foundational to trust, comprehension, and wayfinding",
       "Progressive guidance can reduce cognitive load without oversimplifying academic processes",
       "Design-system work becomes more valuable when connected to real cross-platform journey problems",

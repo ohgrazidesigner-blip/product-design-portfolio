@@ -77,9 +77,11 @@ export function Process() {
 
             <div className="max-w-[600px] space-y-6 text-lg leading-[1.7] text-muted-foreground">
               <p>
-                Shared methods create consistency, but they do
-                not replace product judgment. Every challenge
-                has a different level of uncertainty, user and
+                Reusable systems are only useful when they are
+                grounded in the right problem. Shared methods
+                create consistency, but they do not replace
+                product judgment. Every challenge has a
+                different level of uncertainty, user and
                 business risk, implementation cost, and
                 available evidence.
               </p>

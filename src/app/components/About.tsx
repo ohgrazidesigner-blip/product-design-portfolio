@@ -55,11 +55,11 @@ export function About() {
               </p>
 
               <p>
-                The case studies in this portfolio are
-                independent product studies. They show my
-                end-to-end reasoning and proposed solutions;
-                concept-stage work is identified clearly and is
-                not presented as shipped or validated impact.
+                Across these contexts, my role is consistent: I
+                understand the system behind the interface,
+                identify where complexity creates risk, and turn
+                that complexity into clearer decisions,
+                workflows, and reusable product patterns.
               </p>
             </div>
           </div>

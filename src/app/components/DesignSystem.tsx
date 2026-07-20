@@ -57,9 +57,10 @@ export function DesignSystem() {
 
             <div className="max-w-[600px] space-y-6 text-lg leading-[1.7] text-muted-foreground">
               <p>
-                In my product studies, I use systems thinking to
-                connect individual interface decisions with the
-                wider experience.
+                Across these product studies, I use systems
+                thinking to connect individual interface
+                decisions with the wider workflow and the
+                product decisions it needs to support.
               </p>
 
               <p>

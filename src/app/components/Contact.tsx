@@ -45,7 +45,7 @@ export function Contact() {
               </p>
 
               <p>
-                Based in Salvador, Brazil (UTC−3), and available
+                Based in Salvador, Brazil (UTC-3), and available
                 for remote collaboration with international
                 teams.
               </p>

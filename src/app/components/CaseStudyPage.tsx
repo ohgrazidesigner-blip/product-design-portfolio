@@ -81,7 +81,7 @@ export function CaseStudyPage({
             {study.overview}
           </p>
 
-          <dl className="mt-12 grid gap-x-8 gap-y-8 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-10 grid gap-x-10 gap-y-7 border-t border-border pt-7 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <dt className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Product
@@ -176,9 +176,9 @@ export function CaseStudyPage({
           {study.scope ||
           study.stakeholderReview ||
           study.status ? (
-            <div className="mt-10 grid gap-5 lg:grid-cols-4">
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {study.scope ? (
-                <div className="rounded-xl border border-border bg-muted/30 p-6 lg:col-span-2">
+                <div className="rounded-xl border border-border bg-muted/30 p-6 sm:col-span-2 lg:col-span-2">
                   <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--premium-accent)]">
                     Project scope
                   </p>

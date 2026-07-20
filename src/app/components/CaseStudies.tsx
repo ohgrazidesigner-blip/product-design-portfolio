@@ -63,10 +63,13 @@ export function CaseStudies({
           </h2>
 
           <p className="mb-16 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Independent product studies exploring legacy
-            ecosystems, operational decision-making, and
-            scalable B2B workflows. Each case distinguishes
-            completed design work from validation still needed.
+            Three independent studies show how I approach
+            complexity at different layers: orienting students
+            across a fragmented ecosystem, helping supply chain
+            teams act on operational risk, and structuring
+            financial workflows for businesses and accountants.
+            Each case separates completed design decisions from
+            validation still required.
           </p>
         </motion.div>
 
