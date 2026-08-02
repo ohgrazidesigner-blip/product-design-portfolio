@@ -100,7 +100,7 @@ export function CaseStudies({
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        className="aspect-[16/10] w-full origin-center scale-[1.65] bg-background object-cover object-center transition-transform duration-500 group-hover:scale-[1.72]"
+                        className="aspect-[16/10] w-full bg-background object-contain object-center p-2 transition-transform duration-500 group-hover:scale-[1.015]"
                       />
                     </div>
                   </div>

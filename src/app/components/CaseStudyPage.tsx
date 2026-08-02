@@ -81,6 +81,18 @@ export function CaseStudyPage({
             {study.overview}
           </p>
 
+          {study.prototypeUrl ? (
+            <a
+              href={`${import.meta.env.BASE_URL}${study.prototypeUrl.replace(/^\/+/, "")}`}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-8 inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--premium-accent)] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--premium-accent)]"
+            >
+              Explore the interactive prototype
+              <span aria-hidden="true" className="ml-2">↗</span>
+            </a>
+          ) : null}
+
           <dl className="mt-10 grid gap-x-10 gap-y-7 border-t border-border pt-7 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <dt className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -173,9 +185,9 @@ export function CaseStudyPage({
             ) : null}
           </dl>
 
-          {study.scope ||
+          {!study.executiveSummary && (study.scope ||
           study.stakeholderReview ||
-          study.status ? (
+          study.status) ? (
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {study.scope ? (
                 <div className="rounded-xl border border-border bg-muted/30 p-6 sm:col-span-2 lg:col-span-2">
@@ -218,6 +230,97 @@ export function CaseStudyPage({
       </header>
 
       <div>
+        {study.executiveSummary ? (
+          <section
+            aria-labelledby="executive-summary-title"
+            className="border-b border-border bg-muted/30 px-6 py-16 md:px-12 md:py-20 lg:px-24"
+          >
+            <div className="mx-auto max-w-7xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="max-w-5xl"
+              >
+                <p className="mb-5 text-sm font-medium uppercase tracking-wider text-[var(--premium-accent)]">
+                  Executive summary
+                </p>
+                <h2
+                  id="executive-summary-title"
+                  className="text-3xl font-normal leading-[1.12] tracking-[-0.02em] md:text-5xl"
+                >
+                  {study.executiveSummary.heading}
+                </h2>
+                <p className="mt-6 text-lg leading-[1.8] text-muted-foreground md:text-xl">
+                  {study.executiveSummary.summary}
+                </p>
+              </motion.div>
+
+              <dl className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+                {study.executiveSummary.metrics.map((metric) => (
+                  <div key={metric.label} className="bg-card p-6">
+                    <dt className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                      {metric.label}
+                    </dt>
+                    <dd className="mt-3 text-3xl font-medium tracking-[-0.02em] text-foreground">
+                      {metric.value}
+                    </dd>
+                    <p className="mt-2 text-sm leading-[1.6] text-muted-foreground">
+                      {metric.detail}
+                    </p>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-10 grid overflow-hidden rounded-2xl border border-border bg-card lg:grid-cols-[0.72fr_1.28fr]">
+                <div className="border-b border-border p-6 md:p-8 lg:border-b-0 lg:border-r">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Design decision
+                  </p>
+                  <div className="mt-5 flex flex-wrap items-center gap-3">
+                    <span className="rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                      Usability gate · {study.executiveSummary.gate.usability}
+                    </span>
+                    <span className="rounded-full bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-700 dark:text-red-300">
+                      Release gate · {study.executiveSummary.gate.release}
+                    </span>
+                  </div>
+                  <p className="mt-5 leading-[1.7] text-muted-foreground">
+                    {study.executiveSummary.gate.explanation}
+                  </p>
+                </div>
+
+                <div className="p-6 md:p-8">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Evidence-led iteration
+                  </p>
+                  <ol className="mt-5 grid gap-5 md:grid-cols-3">
+                    {study.executiveSummary.iteration.map((item, index) => (
+                      <li key={item.step}>
+                        <div className="mb-3 flex items-center gap-3">
+                          <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[var(--premium-accent)] text-xs font-semibold text-white">
+                            {index + 1}
+                          </span>
+                          <h3 className="font-medium text-foreground">
+                            {item.step}
+                          </h3>
+                        </div>
+                        <p className="text-sm leading-[1.7] text-muted-foreground">
+                          {item.description}
+                        </p>
+                      </li>
+                    ))}
+                  </ol>
+                  <blockquote className="mt-6 border-l-2 border-[var(--premium-accent)] pl-4 text-sm italic leading-[1.7] text-muted-foreground">
+                    {study.executiveSummary.participantEvidence}
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         <section className="px-6 py-20 md:px-12 md:py-24 lg:px-24">
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
             <motion.div
@@ -1190,95 +1293,131 @@ export function CaseStudyPage({
                         </p>
                       </motion.div>
 
-                      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                        {group.images.map(
-                          (image, imageIndex) => {
-                            const visualId = `${study.slug}-${groupIndex}-${imageIndex}`;
-
-                            return (
-                              <motion.figure
-                                key={visualId}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{
-                                  opacity: 1,
-                                  y: 0,
-                                }}
-                                viewport={{
-                                  once: true,
-                                  amount: 0.2,
-                                }}
-                                transition={{
-                                  duration: 0.6,
-                                  delay: Math.min(
-                                    imageIndex * 0.08,
-                                    0.24,
-                                  ),
-                                  ease: "easeOut",
-                                }}
-                                className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
-                              >
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setExpandedVisual({
-                                      id: visualId,
-                                      src: image.src,
-                                      alt: image.alt,
-                                      caption: image.caption,
-                                    });
-                                  }}
-                                  className="group block w-full cursor-zoom-in text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--premium-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                                  aria-label={`Open larger image: ${image.caption}`}
-                                >
-                                  <div className="border-b border-border bg-background/80 px-4 py-3">
-                                    <div className="flex items-center justify-between gap-4">
-                                      <div className="flex items-center gap-2">
-                                        <span
-                                          aria-hidden="true"
-                                          className="h-2.5 w-2.5 rounded-full bg-muted-foreground/30"
-                                        />
-                                        <span
-                                          aria-hidden="true"
-                                          className="h-2.5 w-2.5 rounded-full bg-muted-foreground/30"
-                                        />
-                                        <span
-                                          aria-hidden="true"
-                                          className="h-2.5 w-2.5 rounded-full bg-muted-foreground/30"
-                                        />
-                                      </div>
-
-                                      <span className="text-xs font-medium uppercase tracking-wider text-[var(--premium-accent)] opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-                                        Open
-                                      </span>
-                                    </div>
-                                  </div>
-
-                                  <div className="bg-background p-3 transition-colors group-hover:bg-muted/20">
-                                    <span className="block overflow-hidden rounded-xl border border-border bg-muted/30">
-                                      <motion.img
-                                        layoutId={visualId}
-                                        src={image.src}
-                                        alt={image.alt}
-                                        loading="lazy"
-                                        decoding="async"
-                                        className="aspect-[16/10] w-full bg-background object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
-                                      />
-                                    </span>
-
-                                    <span className="mt-3 inline-flex min-h-9 items-center text-sm font-medium text-[var(--premium-accent)]">
-                                      Open larger image
-                                      <ExternalLinkIcon className="ml-2 h-4 w-4" />
-                                    </span>
-                                  </div>
-                                </button>
-
-                                <figcaption className="border-t border-border bg-card px-5 py-4 text-sm leading-[1.7] text-muted-foreground">
-                                  {image.caption}
-                                </figcaption>
-                              </motion.figure>
-                            );
+                      <div className="space-y-10">
+                        {Array.from(
+                          {
+                            length: Math.ceil(
+                              group.images.length / 2,
+                            ),
                           },
-                        )}
+                          (_, pairIndex) =>
+                            group.images.slice(
+                              pairIndex * 2,
+                              pairIndex * 2 + 2,
+                            ),
+                        ).map((pair, pairIndex) => {
+                          const desktopImage =
+                            pair.find(
+                              (image) =>
+                                image.presentation ===
+                                "desktop",
+                            ) ?? pair[0];
+                          const mobileImage =
+                            pair.find(
+                              (image) =>
+                                image.presentation ===
+                                "mobile",
+                            ) ?? pair[1];
+                          const pairTitle =
+                            desktopImage.caption.replace(
+                              /,\s*desktop\.?$/i,
+                              "",
+                            );
+
+                          return (
+                            <motion.figure
+                              key={`${study.slug}-${groupIndex}-${pairIndex}`}
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{
+                                opacity: 1,
+                                y: 0,
+                              }}
+                              viewport={{
+                                once: true,
+                                amount: 0.12,
+                              }}
+                              transition={{
+                                duration: 0.6,
+                                delay: Math.min(
+                                  pairIndex * 0.08,
+                                  0.24,
+                                ),
+                                ease: "easeOut",
+                              }}
+                              className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+                            >
+                              <figcaption className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4 md:px-6">
+                                <span className="text-base font-medium text-foreground">
+                                  {pairTitle}
+                                </span>
+                                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                                  Responsive pair
+                                </span>
+                              </figcaption>
+
+                              <div className="grid items-start gap-6 bg-background p-4 sm:p-6 lg:grid-cols-[minmax(0,2.35fr)_minmax(220px,0.65fr)] lg:gap-8 lg:p-8">
+                                {[desktopImage, mobileImage]
+                                  .filter(Boolean)
+                                  .map((image, imageIndex) => {
+                                    const visualId = `${study.slug}-${groupIndex}-${pairIndex}-${imageIndex}`;
+                                    const isMobile =
+                                      image.presentation ===
+                                      "mobile";
+
+                                    return (
+                                      <div
+                                        key={visualId}
+                                        className={
+                                          isMobile
+                                            ? "mx-auto w-full max-w-[310px] lg:max-w-none"
+                                            : "min-w-0"
+                                        }
+                                      >
+                                        <div className="mb-3 flex items-center justify-between gap-3">
+                                          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--premium-accent)]">
+                                            {isMobile
+                                              ? "Mobile · 390 px"
+                                              : "Desktop · 1440 px"}
+                                          </span>
+                                          <span className="text-xs text-muted-foreground">
+                                            Select to enlarge
+                                          </span>
+                                        </div>
+
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setExpandedVisual({
+                                              id: visualId,
+                                              src: image.src,
+                                              alt: image.alt,
+                                              caption:
+                                                image.caption,
+                                            });
+                                          }}
+                                          className="group block w-full cursor-zoom-in overflow-hidden rounded-xl border border-border bg-white text-left shadow-[0_18px_50px_rgba(15,23,42,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--premium-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                                          aria-label={`Open larger image: ${image.caption}`}
+                                        >
+                                          <motion.img
+                                            layoutId={visualId}
+                                            src={image.src}
+                                            alt={image.alt}
+                                            loading="lazy"
+                                            decoding="async"
+                                            className={
+                                              isMobile
+                                                ? "aspect-[390/844] w-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.008]"
+                                                : "aspect-[45/32] w-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.008]"
+                                            }
+                                          />
+                                        </button>
+                                      </div>
+                                    );
+                                  })}
+                              </div>
+                            </motion.figure>
+                          );
+                        })}
                       </div>
                     </section>
                   ),
@@ -1480,6 +1619,251 @@ export function CaseStudyPage({
                   {study.designSystemAccessibility.limitation}
                 </p>
               </motion.aside>
+            </div>
+          </section>
+        ) : null}
+
+        {study.usabilityValidation ? (
+          <section
+            aria-labelledby="usability-validation-title"
+            className="border-t border-border bg-muted/30 px-6 py-20 md:px-12 md:py-24 lg:px-24"
+          >
+            <div className="mx-auto max-w-7xl">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.6,
+                  ease: "easeOut",
+                }}
+                className="max-w-4xl"
+              >
+                <p className="mb-5 text-sm font-medium uppercase tracking-wider text-[var(--premium-accent)]">
+                  Usability testing and iteration
+                </p>
+
+                <h2
+                  id="usability-validation-title"
+                  className="text-3xl font-normal leading-[1.12] tracking-[-0.02em] md:text-4xl"
+                >
+                  {study.usabilityValidation.heading}
+                </h2>
+
+                <p className="mt-6 text-lg leading-[1.8] text-muted-foreground">
+                  {study.usabilityValidation.introduction}
+                </p>
+              </motion.div>
+
+              <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {study.usabilityValidation.studyMetrics.map(
+                  (metric, index) => (
+                    <motion.div
+                      key={metric.label}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: Math.min(index * 0.08, 0.24),
+                        ease: "easeOut",
+                      }}
+                      className="rounded-xl border border-border bg-card p-6"
+                    >
+                      <p className="text-3xl font-medium tracking-[-0.03em] text-foreground">
+                        {metric.value}
+                      </p>
+
+                      <h3 className="mt-3 text-sm font-medium text-foreground">
+                        {metric.label}
+                      </h3>
+
+                      <p className="mt-2 text-sm leading-[1.6] text-muted-foreground">
+                        {metric.detail}
+                      </p>
+                    </motion.div>
+                  ),
+                )}
+              </div>
+
+              <div className="mt-16">
+                <div className="mb-7 max-w-3xl">
+                  <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--premium-accent)]">
+                    The turning point
+                  </p>
+
+                  <h3 className="text-2xl font-normal leading-[1.2] tracking-[-0.02em] md:text-3xl">
+                    Treating one failed path as a design signal
+                  </h3>
+                </div>
+
+                <div className="grid gap-5 md:grid-cols-3">
+                  {study.usabilityValidation.iteration.map(
+                    (item, index) => (
+                      <motion.article
+                        key={item.title}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: Math.min(index * 0.08, 0.24),
+                          ease: "easeOut",
+                        }}
+                        className="rounded-xl border border-border bg-background p-6 md:p-8"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="mb-5 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--premium-accent)]/10 text-sm font-medium text-[var(--premium-accent)]"
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+
+                        <h4 className="text-lg font-medium leading-[1.4] text-foreground">
+                          {item.title}
+                        </h4>
+
+                        <p className="mt-3 leading-[1.7] text-muted-foreground">
+                          {item.description}
+                        </p>
+                      </motion.article>
+                    ),
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-16">
+                <div className="mb-7 max-w-3xl">
+                  <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--premium-accent)]">
+                    Final mobile revalidation
+                  </p>
+
+                  <h3 className="text-2xl font-normal leading-[1.2] tracking-[-0.02em] md:text-3xl">
+                    Two entry points, validated separately
+                  </h3>
+                </div>
+
+                <div className="overflow-x-auto rounded-xl border border-border bg-card">
+                  <table className="w-full min-w-[760px] border-collapse text-left">
+                    <thead className="bg-muted/50">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-5 py-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        >
+                          Entry point
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-5 py-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        >
+                          Starting state
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-5 py-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        >
+                          Sessions
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-5 py-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        >
+                          Direct
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-5 py-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        >
+                          Avg. time
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-5 py-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        >
+                          Avg. SEQ
+                        </th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {study.usabilityValidation.routeResults.map(
+                        (result) => (
+                          <tr
+                            key={result.route}
+                            className="border-t border-border"
+                          >
+                            <th
+                              scope="row"
+                              className="px-5 py-5 text-sm font-medium text-foreground"
+                            >
+                              {result.route}
+                            </th>
+                            <td className="px-5 py-5 text-sm leading-[1.6] text-muted-foreground">
+                              {result.startingPoint}
+                            </td>
+                            <td className="px-5 py-5 text-sm text-foreground">
+                              {result.sessions}
+                            </td>
+                            <td className="px-5 py-5 text-sm font-medium text-[var(--premium-accent)]">
+                              {result.directSuccess}
+                            </td>
+                            <td className="px-5 py-5 text-sm text-foreground">
+                              {result.averageTime}
+                            </td>
+                            <td className="px-5 py-5 text-sm text-foreground">
+                              {result.averageSeq}
+                            </td>
+                          </tr>
+                        ),
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div className="mt-12 grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
+                <motion.aside
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{
+                    duration: 0.6,
+                    ease: "easeOut",
+                  }}
+                  className="rounded-2xl border border-[var(--premium-accent)]/20 bg-[var(--premium-accent)]/5 p-6 md:p-8"
+                  aria-label="Usability gate conclusion"
+                >
+                  <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--premium-accent)]">
+                    Usability gate · APPROVED
+                  </p>
+
+                  <p className="text-lg leading-[1.8] text-foreground">
+                    {study.usabilityValidation.conclusion}
+                  </p>
+                </motion.aside>
+
+                <motion.aside
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.08,
+                    ease: "easeOut",
+                  }}
+                  className="rounded-2xl border border-border bg-background p-6 md:p-8"
+                  aria-label="Institutional governance status"
+                >
+                  <p className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Publication · NO-GO
+                  </p>
+
+                  <p className="leading-[1.8] text-foreground">
+                    {study.usabilityValidation.governance}
+                  </p>
+                </motion.aside>
+              </div>
             </div>
           </section>
         ) : null}
@@ -1895,7 +2279,8 @@ export function CaseStudyPage({
           </section>
         )}
 
-        {study.learningsNextSteps ? (
+        {study.learningsNextSteps &&
+        study.slug !== "unifatecie-student-onboarding" ? (
           <section
             aria-labelledby="learnings-next-steps-title"
             className="border-t border-border bg-muted/30 px-6 py-20 md:px-12 md:py-24 lg:px-24"

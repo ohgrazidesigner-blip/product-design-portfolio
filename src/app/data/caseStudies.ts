@@ -14,12 +14,32 @@ export type CaseStudy = {
   year: string;
   category: string;
   projectNature?: string;
+  prototypeUrl?: string;
   dates?: string;
   team?: string;
   tools?: string[];
   scope?: string;
   stakeholderReview?: string;
   status?: string;
+  executiveSummary?: {
+    heading: string;
+    summary: string;
+    metrics: {
+      label: string;
+      value: string;
+      detail: string;
+    }[];
+    gate: {
+      usability: string;
+      release: string;
+      explanation: string;
+    };
+    iteration: {
+      step: string;
+      description: string;
+    }[];
+    participantEvidence: string;
+  };
   existingExperience?: {
     heading: string;
     introduction: string;
@@ -95,6 +115,7 @@ export type CaseStudy = {
         src: string;
         alt: string;
         caption: string;
+        presentation?: "desktop" | "mobile";
       }[];
     }[];
   };
@@ -111,6 +132,25 @@ export type CaseStudy = {
       description: string;
     }[];
     limitation: string;
+  };
+  usabilityValidation?: {
+    heading: string;
+    introduction: string;
+    studyMetrics: CaseStudyMetric[];
+    iteration: {
+      title: string;
+      description: string;
+    }[];
+    routeResults: {
+      route: string;
+      startingPoint: string;
+      sessions: string;
+      directSuccess: string;
+      averageTime: string;
+      averageSeq: string;
+    }[];
+    conclusion: string;
+    governance: string;
   };
   validationNextSteps?: {
     heading: string;
@@ -180,11 +220,12 @@ export const caseStudies: CaseStudy[] = [
     title: "Redesigning a fragmented student journey",
     company: "UniFatecie · Higher education ecosystem",
     role: "Independent Product Designer",
-    duration: "6 weeks",
+    duration: "6-week design phase",
     year: "2026",
-    dates: "May to June 2026",
+    dates: "May to July 2026",
     category: "Product Design · UX Research",
     projectNature: "Independent redesign study",
+    prototypeUrl: "unifatecie-prototype.html",
     team: "Independent study · Sole designer",
     tools: [
       "Figma",
@@ -192,13 +233,66 @@ export const caseStudies: CaseStudy[] = [
       "TypeScript",
       "Tailwind CSS",
       "Vite",
+      "Notion",
     ],
     scope:
-      "An audit of the existing ecosystem, a proposed information architecture, three primary end-to-end flows, six high-fidelity screens, cross-platform transitions, and contextual empty states.",
+      "An ecosystem audit, analysis of 80 public complaints, moderated usability testing, a task-based information architecture, responsive end-to-end flows, a high-fidelity prototype, and targeted revalidation after iteration.",
     stakeholderReview:
-      "This independent study was not commissioned by or developed in partnership with UniFatecie. The proposal was presented to Student Services Coordination for feedback.",
+      "Service rules and prototype states were reviewed with Student Services, Academic Secretariat, Finance, Pole Coordination, and IT.",
     status:
-      "High-fidelity coded prototype. Not shipped; user validation, technical review, and implementation remain pending.",
+      "Usability gate approved. Institutional release gate remains NO-GO.",
+    executiveSummary: {
+      heading: "Usable did not mean ready to ship",
+      summary:
+        "Students relied on five disconnected environments to complete essential academic tasks. I audited the ecosystem, analyzed 80 public complaints, and tested a task-based redesign with eight students. The prototype reached 95.8% direct task success and a SUS score of 81.9, but institutional review exposed the project’s most important decision: approve the interaction model while keeping release blocked until operational, security, and data-governance risks are resolved.",
+      metrics: [
+        {
+          label: "Research evidence",
+          value: "80",
+          detail: "public complaints reviewed and 77 classified",
+        },
+        {
+          label: "Moderated study",
+          value: "8",
+          detail: "students completing 48 task attempts",
+        },
+        {
+          label: "Direct success",
+          value: "95.8%",
+          detail: "46 of 48 attempts without moderator help",
+        },
+        {
+          label: "System usability",
+          value: "81.9",
+          detail: "average SUS, above the target of 75",
+        },
+      ],
+      gate: {
+        usability: "GO",
+        release: "NO-GO",
+        explanation:
+          "The tested interaction model met its usability criteria. Publication still depends on institutional rules, RBAC, LGPD, retention, implementation, accessibility validation, and production QA.",
+      },
+      iteration: [
+        {
+          step: "Evidence",
+          description:
+            "P02 looked under Requests, opened “New request,” and could not find Student Card in 15 seconds. SEQ: 2/7.",
+        },
+        {
+          step: "Decision",
+          description:
+            "I treated the detour as architecture evidence, exposed Student Card as a service, and added the “Photo required” state and action.",
+        },
+        {
+          step: "Revalidation",
+          description:
+            "Home and Requests were tested as separate entry points. All 11 final sessions were direct, averaging 6.2 seconds and SEQ 6.8/7.",
+        },
+      ],
+      participantEvidence:
+        "Participant behavior, paraphrased: “I looked in Requests because the Student Card felt like a service I needed to request.”",
+    },
     existingExperience: {
       heading:
         "Mapping a student experience distributed across five environments",
@@ -261,67 +355,78 @@ export const caseStudies: CaseStudy[] = [
     },
     researchDiscovery: {
       heading:
-        "Building evidence through an ecosystem audit",
+        "Combining ecosystem evidence with observed student behavior",
       introduction:
-        "This was expert-led discovery, not generative user research. I reviewed the public entry journey, analyzed one recorded authenticated walkthrough, mapped cross-platform task paths, and audited interface, content, accessibility, and system inconsistencies. The resulting findings are evidence-based design hypotheses that still require validation with students and institutional teams.",
+        "The discovery moved from an expert-led ecosystem audit to moderated testing with students. I combined the public entry journey, an authenticated walkthrough, 80 public complaints, interface and content analysis, a six-task usability study with eight students, and institutional rule reviews. This created a traceable line from recurring service problems to design decisions and revalidation.",
       methods: [
         {
-          title: "Public journey audit",
+          title: "Public and authenticated journey audit",
           description:
-            "I navigated the institutional website without assuming prior knowledge of UniFatecie’s platform structure, focusing on how students locate portals, courses, services, and academic information.",
+            "I reviewed the institutional entry journey and one recorded authenticated EAD Pedagogy walkthrough, documenting every visible platform, transition, task path, system state, and external destination.",
           output:
-            "Public entry-point analysis and an initial map of the platform ecosystem.",
+            "A current-state ecosystem map connecting the institutional website, Student Portal, Moodle / AVA, AlunoNet / WAEWeb, and Inova Carreira.",
         },
         {
-          title: "Recorded authenticated walkthrough",
+          title: "Public complaint analysis",
           description:
-            "I analyzed one recorded walkthrough of an authenticated EAD Pedagogy account, reviewing each visible screen, transition, system state, and external destination.",
+            "I reviewed 80 Reclame Aqui complaints published between July 2022 and July 2026. Seventy-seven were classified across six recurring themes and three were excluded.",
           output:
-            "Authenticated screen inventory and documentation of cross-platform task paths.",
+            "A quantified view of recurring problems involving grades and attendance, modality and course offering, finance, documents, platform access, and support.",
         },
         {
-          title: "Heuristic evaluation",
+          title: "Moderated usability study",
           description:
-            "I evaluated navigation, hierarchy, terminology, consistency, system feedback, error prevention, and recovery patterns across the experience.",
+            "Eight EAD and semipresential Pedagogy students completed six task-based scenarios across mobile, desktop, and alternating-device contexts. I captured direct success, time, SEQ, errors, recovery behavior, and SUS.",
           output:
-            "A prioritized set of usability risks and hypotheses for validation.",
+            "Forty-eight task attempts, a 95.8% direct-success rate, an average SEQ of 6.4, and an average SUS score of 81.9.",
         },
         {
-          title: "Interface and content audit",
+          title: "Heuristic, content, and accessibility review",
           description:
-            "I catalogued interface patterns, labels, acronyms, component states, empty states, tables, forms, and support categories across the ecosystem.",
+            "I evaluated navigation, terminology, hierarchy, system feedback, error prevention, responsive behavior, visible accessibility risks, and recovery patterns across the existing experience and prototype.",
           output:
-            "A terminology audit, component inventory, and content-design recommendations.",
+            "A prioritized issue backlog, terminology audit, component inventory, and accessibility recommendations.",
         },
         {
-          title: "Journey mapping",
+          title: "Journey and information-architecture mapping",
           description:
-            "I connected public entry points, authentication, dashboard navigation, learning activities, grades, financial information, documents, and support services.",
+            "I connected public entry, authentication, classes, grades, financial tasks, documents, requests, and support, then reorganized navigation around student goals instead of platform names.",
           output:
-            "A current-state journey showing system transitions, uncertainty, and task interruptions.",
+            "Current-state and proposed journeys, a task-based service model, and priority flows for prototyping.",
         },
         {
-          title: "Design-system and accessibility review",
+          title: "Institutional rule review",
           description:
-            "I compared visual foundations and reusable patterns while identifying visible accessibility risks such as small text, dense tables, icon-only actions, and inconsistent feedback.",
+            "Prototype rules and service states were reviewed with Student Services, Academic Secretariat, Finance, Pole Coordination, and IT, including official-grade timing, financial states, requests, and student-card requirements.",
           output:
-            "An as-built system audit and a list of visible accessibility risks to investigate further.",
+            "Validated operational rules for the prototype and an explicit list of security, permissions, LGPD, retention, and implementation blockers.",
         },
       ],
       limitations: [
-        "No student interviews or moderated usability tests were conducted",
-        "No production analytics, retention data, or support-ticket data were available",
-        "The authenticated analysis represented one EAD Pedagogy account",
-        "Accessibility findings were based on expert visual review, not formal assistive-technology testing",
-        "Technical feasibility and implementation constraints were not reviewed with engineering",
+        "The moderated sample focused on EAD and semipresential Pedagogy students and should not be generalized to every modality or course",
+        "Public complaints reveal recurring service problems but do not represent the full student population",
+        "No production analytics, retention data, or internal support-ticket data were available",
+        "The authenticated audit began from one EAD Pedagogy account",
+        "Accessibility checks did not include a formal WCAG audit or assistive-technology testing",
+        "Security, RBAC, LGPD, retention, integration, and production feasibility remain institutional responsibilities",
       ],
     },
     keyFindings: {
       heading:
         "The experience required students to understand the institution’s systems before completing their goals",
       introduction:
-        "The audit indicated that the highest-priority risks were not isolated interface defects. They emerged across platform boundaries through fragmented ownership, inconsistent terminology, unclear transitions, and the absence of a shared orientation layer.",
+        "The audit, public complaints, and usability sessions showed that the highest-priority risks were not isolated interface defects. They emerged across platform boundaries through fragmented ownership, inconsistent terminology, unclear transitions, and the absence of a shared orientation layer.",
       findings: [
+        {
+          title:
+            "Academic records concentrated the largest share of public complaints",
+          evidence:
+            "Thirty-one of the 77 classified complaints, 40.3%, involved subjects, assessments, grades, attendance, or internships.",
+          consequence:
+            "Unclear ownership and synchronization rules in high-stakes academic information can increase uncertainty, repeat checking, and support dependency.",
+          implication:
+            "Prioritize one clear academic entry point, distinguish provisional from official data, and make synchronization timing visible.",
+        },
         {
           title:
             "The platform architecture was exposed to students",
@@ -614,7 +719,8 @@ export const caseStudies: CaseStudy[] = [
       ],
       prototypeCoverage: [
         "Three primary end-to-end student flows",
-        "Six high-fidelity product screens",
+        "Responsive high-fidelity screens across onboarding and essential services",
+        "Controlled mobile variants for route-specific revalidation",
         "One cross-platform transition modal",
         "Three contextual empty-state variations",
         "Responsive interaction patterns",
@@ -623,70 +729,179 @@ export const caseStudies: CaseStudy[] = [
     },
     visualEvidence: {
       heading:
-        "Visual evidence from the proposed onboarding experience",
+        "Responsive product screens from the validated student portal",
       introduction:
-        "The visuals below document the high-fidelity coded prototype created for this study. They illustrate how the proposed orientation layer would support first access, academic context, service routing, cross-platform transitions, and recovery states. No personal or production student data is shown.",
+        "The same 12 product states were designed for desktop and 390 px mobile layouts. The paired screens below document the responsive behavior used across navigation, academic information, finance, requests, Student Card, negotiation, and scheduling. All content uses fictional student data.",
       groups: [
         {
-          title: "Onboarding flow",
+          title: "Academic overview and finance",
           description:
-            "The first screens establish orientation, confirm the student’s academic context, and turn onboarding into a sequence of visible first-week actions.",
+            "Desktop and mobile versions preserve course context, official-grade guidance, payment status, and the same task-based information hierarchy.",
           images: [
             {
-              src: "/assets/cases/unifatecie/01-welcome.png",
-              alt: "Welcome screen from the UniFatecie student onboarding prototype with academic status, first actions, and orientation cards.",
-              caption:
-                "Decision: establish academic context and next actions before exposing the full service ecosystem.",
+              src: "/assets/cases/unifatecie/final-desktop/01-dashboard.png",
+              alt: "UniFatecie desktop dashboard.",
+              caption: "Prioritize the next student action without exposing platform ownership, desktop.",
+              presentation: "desktop",
             },
             {
-              src: "/assets/cases/unifatecie/02-freshman-checklist.png",
-              alt: "Freshman checklist screen showing onboarding tasks such as enrollment confirmation, important dates, first subject access, financial status, and support channels.",
-              caption:
-                "Decision: limit initial onboarding to five meaningful tasks instead of presenting every available service.",
+              src: "/assets/cases/unifatecie/final-mobile/01-dashboard.png",
+              alt: "UniFatecie mobile dashboard.",
+              caption: "Prioritize the next student action without exposing platform ownership, mobile.",
+              presentation: "mobile",
             },
             {
-              src: "/assets/cases/unifatecie/03-student-dashboard.png",
-              alt: "Student dashboard screen with task-based navigation, academic cards, service shortcuts, and contextual student guidance.",
-              caption:
-                "Decision: replace platform-first navigation with recognizable goals such as Classes, Grades, Finance, and Help.",
+              src: "/assets/cases/unifatecie/final-desktop/02-grades-and-attendance.png",
+              alt: "UniFatecie desktop grades and attendance screen.",
+              caption: "Separate provisional activity results from official academic records, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/02-grades-and-attendance.png",
+              alt: "UniFatecie mobile grades and attendance screen.",
+              caption: "Separate provisional activity results from official academic records, mobile.",
+              presentation: "mobile",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-desktop/03-finance.png",
+              alt: "UniFatecie desktop finance screen.",
+              caption: "Make payment status, due dates, and recovery actions visible at a glance, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/03-finance.png",
+              alt: "UniFatecie mobile finance screen.",
+              caption: "Make payment status, due dates, and recovery actions visible at a glance, mobile.",
+              presentation: "mobile",
             },
           ],
         },
         {
-          title: "Academic services",
+          title: "Requests and service completion",
           description:
-            "These screens show how the redesign clarifies academic information and makes external platform transitions explicit before students leave the onboarding layer.",
+            "The request journey remains consistent across breakpoints, from service discovery to form completion and protocol confirmation.",
           images: [
             {
-              src: "/assets/cases/unifatecie/04-grades-and-attendance.png",
-              alt: "Grades and attendance screen explaining activity results, official academic records, attendance, and the difference between Moodle and AlunoNet information.",
-              caption:
-                "Decision: create one Grades entry point that explains where activity results and official records come from.",
+              src: "/assets/cases/unifatecie/final-desktop/04-requests.png",
+              alt: "UniFatecie desktop requests screen.",
+              caption: "Expose services directly instead of requiring students to know request categories, desktop.",
+              presentation: "desktop",
             },
             {
-              src: "/assets/cases/unifatecie/05-cross-platform-transition.png",
-              alt: "Cross-platform transition modal explaining that the student is leaving the portal to access another academic system, with destination, purpose, and recovery guidance.",
-              caption:
-                "Decision: accept a brief interruption to explain the destination, purpose, and recovery path before a system change.",
+              src: "/assets/cases/unifatecie/final-mobile/04-requests.png",
+              alt: "UniFatecie mobile requests screen.",
+              caption: "Expose services directly instead of requiring students to know request categories, mobile.",
+              presentation: "mobile",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-desktop/05-new-request.png",
+              alt: "UniFatecie desktop new request form.",
+              caption: "Reduce form ambiguity with plain-language requirements and predictable fields, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/05-new-request.png",
+              alt: "UniFatecie mobile new request form.",
+              caption: "Reduce form ambiguity with plain-language requirements and predictable fields, mobile.",
+              presentation: "mobile",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-desktop/06-request-submitted.png",
+              alt: "UniFatecie desktop request confirmation screen.",
+              caption: "Close the loop with protocol, status, and an explicit next step, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/06-request-submitted.png",
+              alt: "UniFatecie mobile request confirmation screen.",
+              caption: "Close the loop with protocol, status, and an explicit next step, mobile.",
+              presentation: "mobile",
             },
           ],
         },
         {
-          title: "Support and recovery",
+          title: "Payment negotiation",
           description:
-            "The support and empty-state screens demonstrate how guidance, routing, and recovery states reduce ambiguity when a service is unavailable, empty, or requires another action.",
+            "Payment feedback and negotiation options adapt without changing the meaning, status hierarchy, or next action.",
           images: [
             {
-              src: "/assets/cases/unifatecie/06-help-center.png",
-              alt: "Help center screen with support options grouped by student intention, including academic questions, access problems, administrative requests, and urgent assistance.",
-              caption:
-                "Decision: route support by student intention instead of requiring knowledge of departments and internal channels.",
+              src: "/assets/cases/unifatecie/final-desktop/07-finance-pix-copied.png",
+              alt: "UniFatecie desktop Pix copied state.",
+              caption: "Confirm the Pix action immediately without interrupting the payment context, desktop.",
+              presentation: "desktop",
             },
             {
-              src: "/assets/cases/unifatecie/07-empty-states.png",
-              alt: "Empty-state examples from the UniFatecie prototype showing unavailable grades, documents, and requests with contextual explanations and next actions.",
-              caption:
-                "Decision: distinguish empty, unavailable, and error conditions while providing a relevant next action.",
+              src: "/assets/cases/unifatecie/final-mobile/07-finance-pix-copied.png",
+              alt: "UniFatecie mobile Pix copied state.",
+              caption: "Confirm the Pix action immediately without interrupting the payment context, mobile.",
+              presentation: "mobile",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-desktop/08-installment-negotiation.png",
+              alt: "UniFatecie desktop installment negotiation screen.",
+              caption: "Compare negotiation options through total cost, installments, and due dates, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/08-installment-negotiation.png",
+              alt: "UniFatecie mobile installment negotiation screen.",
+              caption: "Compare negotiation options through total cost, installments, and due dates, mobile.",
+              presentation: "mobile",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-desktop/09-negotiation-option-selected.png",
+              alt: "UniFatecie desktop selected negotiation option.",
+              caption: "Keep the selected agreement and its financial consequence visible before confirmation, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/09-negotiation-option-selected.png",
+              alt: "UniFatecie mobile selected negotiation option.",
+              caption: "Keep the selected agreement and its financial consequence visible before confirmation, mobile.",
+              presentation: "mobile",
+            },
+          ],
+        },
+        {
+          title: "Student services",
+          description:
+            "Student Card, debt settlement, and exam scheduling use explicit requirements, service status, and recovery guidance on both screen sizes.",
+          images: [
+            {
+              src: "/assets/cases/unifatecie/final-desktop/10-student-card-photo-required.png",
+              alt: "UniFatecie desktop Student Card photo requirement.",
+              caption: "Turn the P02 failure into a visible service with requirement, status, and action, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/10-student-card-photo-required.png",
+              alt: "UniFatecie mobile Student Card photo requirement.",
+              caption: "Turn the P02 failure into a visible service with requirement, status, and action, mobile.",
+              presentation: "mobile",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-desktop/11-debt-settlement.png",
+              alt: "UniFatecie desktop debt settlement screen.",
+              caption: "Explain what must be settled before the student can proceed, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/11-debt-settlement.png",
+              alt: "UniFatecie mobile debt settlement screen.",
+              caption: "Explain what must be settled before the student can proceed, mobile.",
+              presentation: "mobile",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-desktop/12-exam-scheduling.png",
+              alt: "UniFatecie desktop exam scheduling screen.",
+              caption: "Prevent scheduling errors by surfacing eligibility, location, and available dates together, desktop.",
+              presentation: "desktop",
+            },
+            {
+              src: "/assets/cases/unifatecie/final-mobile/12-exam-scheduling.png",
+              alt: "UniFatecie mobile exam scheduling screen.",
+              caption: "Prevent scheduling errors by surfacing eligibility, location, and available dates together, mobile.",
+              presentation: "mobile",
             },
           ],
         },
@@ -787,38 +1002,109 @@ export const caseStudies: CaseStudy[] = [
       limitation:
         "Accessibility considerations were based on a designer-led visual and interaction review of the available interfaces and prototype. The study did not include a formal WCAG conformance audit, code-level accessibility testing, assistive-technology testing, or validation with disabled students.",
     },
+    usabilityValidation: {
+      heading:
+        "From a failed route to two validated entry points",
+      introduction:
+        "The broader usability study established that the redesigned flows were understandable, but a targeted mobile test exposed a specific findability problem in the Student Card journey. Instead of averaging that failure into the overall score, I isolated the route, changed the information architecture, and revalidated each entry point separately.",
+      studyMetrics: [
+        {
+          label: "Moderated participants",
+          value: "8",
+          detail:
+            "EAD and semipresential students across mobile and desktop contexts.",
+        },
+        {
+          label: "Direct task success",
+          value: "95.8%",
+          detail:
+            "Forty-six of 48 attempts were completed without moderator help.",
+        },
+        {
+          label: "Average SUS",
+          value: "81.9",
+          detail:
+            "The six-task prototype study exceeded the target of 75.",
+        },
+        {
+          label: "Tasks approved",
+          value: "6/6",
+          detail:
+            "All defined usability tasks met the final gate after iteration.",
+        },
+      ],
+      iteration: [
+        {
+          title: "Observed failure",
+          description:
+            "P02 entered Requests, opened “New request,” and could not find the Student Card in 15 seconds. The session ended with SEQ 2.",
+        },
+        {
+          title: "Design response",
+          description:
+            "I exposed Student Card as a visible service in Requests, added the “Photo required” state and “Upload photo” action, and preserved a prominent Home entry point.",
+        },
+        {
+          title: "Controlled revalidation",
+          description:
+            "The Home and Requests routes were tested separately. A neutral Home variant prevented the Student Card shortcut from revealing the answer before the secondary path was evaluated.",
+        },
+      ],
+      routeResults: [
+        {
+          route: "Path A · Home",
+          startingPoint: "Dashboard with Student Card entry",
+          sessions: "6",
+          directSuccess: "6/6 · 100%",
+          averageTime: "6.0 s",
+          averageSeq: "7.0 / 7",
+        },
+        {
+          route: "Path B · Requests",
+          startingPoint: "Neutral Home, no Student Card shortcut",
+          sessions: "5",
+          directSuccess: "5/5 · 100%",
+          averageTime: "6.4 s",
+          averageSeq: "6.6 / 7",
+        },
+      ],
+      conclusion:
+        "Across the final version, all 11 sessions reached the Student Card directly, with a combined average time of 6.2 seconds and an average SEQ of 6.8. Every participant identified the required photo and understood the automatic-cancellation rule. No additional usability test is required for this task.",
+      governance:
+        "GO for design and usability. Publication remains NO-GO until institutional rules, security, RBAC, LGPD, retention, implementation, and production QA are resolved.",
+    },
     validationNextSteps: {
       heading:
-        "Separating completed expert reviews from the validation still required",
+        "Closing the design gate while keeping implementation risk visible",
       introduction:
-        "The current prototype has been reviewed against the problems identified during the audit and presented to the UniFatecie Student Services Coordination. However, the project has not yet been tested with students, reviewed for technical feasibility, or implemented in production.",
+        "The defined prototype flows passed the design and usability gate after moderated testing, iteration, and targeted revalidation. That evidence supports handoff of the design direction, but it does not authorize institutional publication. Technical, legal, security, accessibility, and operational blockers remain explicit.",
       completedReviews: [
         {
-          title: "Designer-led problem-to-solution review",
+          title: "Six-task moderated usability study",
           description:
-            "The proposed flows were checked against the usability, navigation, terminology, feedback, and cross-platform issues documented during the existing-experience audit.",
+            "Eight students completed 48 task attempts across mobile, desktop, and alternating-device contexts. All six tasks met the final gate, with 95.8% direct success and an average SUS score of 81.9.",
         },
         {
-          title: "Designer-led cross-flow consistency review",
+          title: "Critical-flow revalidation",
           description:
-            "Navigation labels, component behaviors, status messages, transitions, and recovery patterns were compared across the three primary prototype flows.",
+            "Five participants revalidated official grades, the next monthly payment, and an overdue installment after iteration. All 15 attempts were direct, with an average SEQ of 6.9.",
         },
         {
-          title: "Designer-led visual accessibility review",
+          title: "Student Card route revalidation",
           description:
-            "The prototype was reviewed for visible hierarchy, text sizing, contrast, focus requirements, labels, interaction states, and feedback that does not depend on color alone.",
+            "The Home and Requests entry points were tested separately. All 11 final sessions were direct, and every participant understood the photo requirement and automatic-cancellation rule.",
         },
         {
-          title: "Stakeholder presentation",
+          title: "Institutional rule review",
           description:
-            "The project direction and prototype were presented to the UniFatecie Student Services Coordination. This presentation should not be interpreted as formal approval, implementation commitment, or user validation.",
+            "Student Services, Academic Secretariat, Finance, Pole Coordination, and IT challenged the prototype with real operating rules. I revised grade synchronization windows, overdue-payment states, and the Student Card photo and cancellation flow, while keeping unresolved access, security, and ownership questions outside the release gate.",
         },
       ],
       pendingValidation: [
         {
-          title: "Student usability testing",
+          title: "Security and data-governance review",
           description:
-            "Test the onboarding journey with new and returning students, focusing on orientation, first-class access, grades, financial information, support routing, and cross-platform transitions.",
+            "Define RBAC, data exposure, consent, retention, audit trails, privacy responsibilities, and LGPD safeguards for each institutional flow.",
         },
         {
           title: "Technical feasibility review",
@@ -826,14 +1112,14 @@ export const caseStudies: CaseStudy[] = [
             "Review authentication, deep links, session behavior, platform ownership, data availability, and integration constraints with engineering and system administrators.",
         },
         {
-          title: "Operational and content validation",
+          title: "Production rule and SLA confirmation",
           description:
-            "Confirm terminology, service ownership, academic rules, support categories, financial states, and recovery guidance with the responsible institutional teams.",
+            "Convert the reviewed prototype rules into approved production requirements, owners, exception handling, synchronization SLAs, and support procedures.",
         },
         {
-          title: "Accessibility validation",
+          title: "Formal accessibility and production QA",
           description:
-            "Evaluate keyboard navigation, screen-reader behavior, semantic structure, zoom, responsive tables, form errors, reduced motion, and external-link announcements.",
+            "Test keyboard navigation, screen readers, semantic structure, zoom, responsive tables, form errors, reduced motion, browsers, devices, and production data states.",
         },
         {
           title: "Pilot and instrumentation",
@@ -876,9 +1162,9 @@ export const caseStudies: CaseStudy[] = [
     },
     outcomesCurrentStatus: {
       heading:
-        "Documenting what the project delivered without implying production impact",
+        "Documenting validated design outcomes without implying production impact",
       introduction:
-        "The project established a documented redesign direction for the student onboarding journey, supported by a task-based architecture, reusable interaction patterns, and a coded high-fidelity prototype. The outcomes below describe completed design work and the project’s current status, not measured production performance.",
+        "The project established and tested a redesign direction for the student journey, supported by research evidence, a task-based architecture, reusable interaction patterns, and a responsive high-fidelity prototype. The outcomes below separate measured prototype performance from production performance, which cannot be claimed before implementation.",
       deliverables: [
         {
           title: "Cross-platform ecosystem and journey map",
@@ -898,7 +1184,7 @@ export const caseStudies: CaseStudy[] = [
         {
           title: "High-fidelity product experience",
           description:
-            "Six high-fidelity product screens covering the core onboarding experience and the main student actions represented in the project scope.",
+            "Responsive high-fidelity flows covering onboarding, grades and attendance, finance, requests, Student Card, support, transitions, and contextual states.",
         },
         {
           title: "Coded interactive prototype",
@@ -916,9 +1202,9 @@ export const caseStudies: CaseStudy[] = [
             "Documented recommendations covering hierarchy, text sizing, visible focus, explicit labels, feedback beyond color, forms, dense data, motion, and external destinations.",
         },
         {
-          title: "Stakeholder presentation",
+          title: "Research and validation repository",
           description:
-            "The design direction and prototype were presented to the UniFatecie Student Services Coordination for review and discussion.",
+            "A consolidated record of moderated sessions, task metrics, SUS and SEQ, issue severity, iterations, final gates, and institutional blockers.",
         },
       ],
       currentStatus: [
@@ -935,12 +1221,12 @@ export const caseStudies: CaseStudy[] = [
         {
           label: "Stakeholder review",
           description:
-            "Presented to the UniFatecie Student Services Coordination, without a claim of formal approval or implementation commitment.",
+            "Service rules and prototype states were reviewed with the relevant academic, financial, student-service, pole, and IT teams, without a claim of formal release approval.",
         },
         {
           label: "Student validation",
           description:
-            "Pending. No student interviews, moderated usability tests, or live pilot have been completed.",
+            "Approved for the defined prototype flows after moderated testing and revalidation. This result does not replace a production pilot.",
         },
         {
           label: "Technical review",
@@ -964,60 +1250,60 @@ export const caseStudies: CaseStudy[] = [
         },
       ],
       evidenceNote:
-        "These outcomes describe artifacts produced, reviews completed, and the current state of the project. They should not be interpreted as institutional approval, technical feasibility confirmation, production adoption, or measured user and business impact.",
+        "The usability figures are measured outcomes from the prototype sessions. They should not be interpreted as institutional approval, technical feasibility confirmation, production adoption, retention impact, support reduction, or business performance.",
     },
     learningsNextSteps: {
       heading:
-        "Turning audit insights into testable design hypotheses",
+        "Turning user evidence into safer product decisions",
       introduction:
-        "The study produced a set of design hypotheses about orientation, terminology, transitions, and feedback across a fragmented ecosystem. They should guide the next iteration, but they are not validated conclusions about student behavior. Student research, technical review, accessibility testing, and operational alignment remain necessary.",
+        "The prototype tests confirmed that task-based navigation and clearer service states can improve comprehension within the defined scenarios. The work also clarified the boundary between a design that is usable and a service that is ready to publish. The next phase is institutional and technical, not another round of cosmetic interface changes.",
       learnings: [
         {
           title:
             "Orientation is part of the product experience",
           description:
-            "The audit suggests that onboarding should address orientation as well as account activation by explaining academic context, service purpose, and next actions.",
+            "Participants completed orientation and essential-service tasks more successfully when academic context, data ownership, and the next action were visible at the point of need.",
         },
         {
           title:
-            "Task-based navigation reduces institutional knowledge",
+            "One successful route does not validate every route",
           description:
-            "The proposed architecture tests whether labels such as Classes, Grades, Finance, Requests, Documents, and Help are easier to understand than internal platform names.",
+            "The Student Card test showed that strong Home findability could not be used as evidence for Requests. Testing the two entry points separately produced a defensible result.",
         },
         {
           title:
-            "Cross-platform transitions need designed continuity",
+            "A participant’s detour is interface evidence",
           description:
-            "The prototype tests whether destination, authentication, return, and recovery guidance can reduce uncertainty when a journey moves between systems.",
+            "P02’s choice to open “New request” was coherent with the service model. Treating it as a design failure led to a visible Student Card service instead of blaming user behavior.",
         },
         {
           title: "Terminology is an architectural decision",
           description:
-            "The study treats labels as part of information architecture and proposes plain-language task names with official terminology used as supporting context.",
+            "Plain-language labels and explicit states such as “Photo required” made complex academic rules easier to find and explain without removing the official service context.",
         },
         {
           title:
-            "Feedback states are part of the service model",
+            "Operational rules belong in the interaction",
           description:
-            "The audit indicates a need to test shared rules for empty, unavailable, loading, warning, error, and success states across the journey.",
+            "Synchronization timing, overdue-payment values, photo requirements, and cancellation conditions changed user decisions. They cannot be treated as secondary copy.",
         },
         {
           title:
-            "Design systems should respond to journey problems",
+            "Usability approval is not release approval",
           description:
-            "The prototype explores reusable patterns as responses to documented cross-platform inconsistencies, not as a standalone visual library.",
+            "A prototype can pass task and comprehension gates while publication remains unsafe. Keeping the institutional NO-GO visible protects users and the credibility of the case.",
         },
       ],
       nextIteration: [
         {
-          title: "Test task comprehension with students",
+          title: "Resolve security and LGPD blockers",
           description:
-            "Evaluate whether new and returning students can identify where to access classes, grades, finance, documents, requests, and support without prior knowledge of platform names.",
+            "Define data exposure, consent, RBAC, retention, auditability, and privacy responsibilities for every institutional flow before release.",
         },
         {
-          title: "Validate the first-class journey",
+          title: "Convert rules into production requirements",
           description:
-            "Test the sequence from account activation to the first available subject, including checklist comprehension, external transitions, authentication interruptions, and recovery.",
+            "Document approved owners, states, exceptions, synchronization SLAs, escalation paths, and content-maintenance responsibilities.",
         },
         {
           title: "Review feasibility with engineering",
@@ -1025,12 +1311,7 @@ export const caseStudies: CaseStudy[] = [
             "Confirm deep-link behavior, authentication, session persistence, data availability, integration boundaries, external destinations, and ownership constraints.",
         },
         {
-          title: "Confirm operational ownership",
-          description:
-            "Review terminology, support categories, financial states, academic rules, escalation paths, and content maintenance responsibilities with the relevant institutional teams.",
-        },
-        {
-          title: "Conduct accessibility validation",
+          title: "Conduct formal accessibility QA",
           description:
             "Test semantic structure, keyboard navigation, screen-reader announcements, zoom, responsive tables, form errors, focus management, reduced motion, and external-link behavior.",
         },
@@ -1042,17 +1323,18 @@ export const caseStudies: CaseStudy[] = [
       ],
     },
     overview:
-      "An independent redesign study exploring how UniFatecie could orient newly enrolled students across a fragmented digital ecosystem. The proposal focuses on helping students understand their academic status, reach their first class, and find essential services without first learning which internal platform owns each task.",
+      "I redesigned essential student journeys across five disconnected environments, validated the interaction model with eight students, and separated a successful usability gate from an institutional NO-GO for release.",
     challenge:
       "To complete basic academic and administrative tasks, students move between the Student Portal, Moodle/AVA, AlunoNet/WAEWeb, and Inova Carreira. Each environment uses different navigation, terminology, interface patterns, and task groupings. The resulting problem is not the absence of functionality. It is the lack of orientation and continuity between systems.",
     context: {
       businessGoal:
         "Explore a clearer onboarding and orientation layer that could help students identify their next actions, understand where tasks take place, and move between essential academic services with less uncertainty.",
       constraints: [
-        "The study was based on an experience audit and did not include access to production analytics, user participants, or internal technical architecture",
+        "The study did not include production analytics, internal support-ticket data, or access to the institution’s technical architecture",
+        "The moderated sample focused on EAD and semipresential Pedagogy students",
         "The proposal assumes the existing platforms and their operational ownership remain in place rather than being replaced",
         "Academic, administrative, learning, and career tasks follow different structures, terminology, and ownership models",
-        "The prototype is not connected to production data, authentication, integrations, or institutional business rules",
+        "The prototype is not connected to production data, authentication, or integrations, and reviewed business rules still require formal production approval",
       ],
       users:
         "The primary audience is newly enrolled students learning how to navigate the institution’s digital ecosystem. Returning students are a secondary audience for recurring academic, administrative, and support tasks.",
@@ -1060,10 +1342,11 @@ export const caseStudies: CaseStudy[] = [
     process: {
       research: [
         "End-to-end review of the authenticated student journey across the Student Portal, Moodle/AVA, AlunoNet/WAEWeb, and Inova Carreira",
+        "Analysis of 80 public complaints, with 77 classified across six recurring service themes",
+        "Moderated usability study with eight students completing six scenarios across mobile and desktop contexts",
         "Heuristic evaluation focused on navigation, hierarchy, feedback, consistency, accessibility, and error prevention",
         "Screen-by-screen inventory and documentation of the existing experience",
-        "Mapping of duplicated labels, inconsistent terminology, and unclear transitions between systems",
-        "Analysis of onboarding moments where students need additional guidance, context, and reassurance",
+        "Institutional review of service rules, synchronization timing, financial states, requests, and Student Card requirements",
       ],
       insights: [
         "Students need to understand the role of each platform before being asked to navigate between them",
@@ -1081,10 +1364,11 @@ export const caseStudies: CaseStudy[] = [
         "A shared design-system foundation to support consistency across future improvements",
       ],
       validation: [
-        "Review of proposed flows against the issues identified during the heuristic evaluation",
-        "Consistency checks across the different systems and redesigned interaction patterns",
-        "Accessibility review covering hierarchy, contrast, focus, labels, and interaction states",
-        "Usability testing planned for the next iteration before implementation",
+        "Six of six tasks approved after moderated testing with eight students",
+        "Critical grades and financial flows revalidated with five participants at 100% direct success",
+        "Student Card iterated after the P02 failure and revalidated through two separate entry points",
+        "Eleven of eleven final Student Card sessions completed directly, with average SEQ 6.8",
+        "Responsive and visible-accessibility review completed, with formal assistive-technology QA still pending",
       ],
     },
     impact: {
@@ -1106,12 +1390,12 @@ export const caseStudies: CaseStudy[] = [
         },
         {
           label: "Validation status",
-          value: "Planned",
-          detail: "Usability testing before implementation",
+          value: "Approved",
+          detail: "Defined design and usability gate",
         },
       ],
       business:
-        "The project established a documented redesign direction for the onboarding journey and a reusable foundation for greater cross-platform consistency. Production outcomes have not yet been measured because implementation and usability testing are still pending.",
+        "The project established and validated a redesign direction for the defined prototype flows, creating a reusable foundation for greater cross-platform consistency. Production outcomes have not been measured because the proposal has not been implemented or released.",
     },
     learnings: [
       "Onboarding in a complex ecosystem is as much about orientation as it is about task completion",
