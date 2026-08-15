@@ -20,15 +20,10 @@ function createCaseHref(slug: string) {
 }
 
 const studyFlows: Record<string, string[]> = {
-  "optima-operational-intelligence": [
-    "Detect risk",
-    "Explain cause",
-    "Support action",
-  ],
   "ledgerflow-accounting-platform": [
-    "Capture",
-    "Reconcile",
-    "Report",
+    "Context",
+    "Evidence",
+    "Close",
   ],
 };
 
@@ -64,16 +59,15 @@ export function CaseStudies({
 
           <p className="mb-16 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
             Three independent studies show how I approach
-            complexity at different layers: orienting students
-            across a fragmented ecosystem, helping supply chain
-            teams act on operational risk, and structuring
-            financial workflows for businesses and accountants.
-            Each case separates completed design decisions from
-            validation still required.
+            complexity at different layers: building safer multi-company
+            accounting operations for Brazilian teams, designing
+            evidence-grounded AI for research synthesis, and orienting
+            students across a fragmented ecosystem. Each case separates
+            completed design decisions from validation still required.
           </p>
         </motion.div>
 
-        <div className="grid items-stretch gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+        <div className="grid items-stretch gap-6 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
           {caseStudies.map((study, index) => {
             const previewImage =
               study.visualEvidence?.groups[0]?.images[0];

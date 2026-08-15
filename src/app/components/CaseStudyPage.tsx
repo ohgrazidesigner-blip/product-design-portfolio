@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { CaseStudy } from "../data/caseStudies";
 
@@ -14,7 +14,59 @@ type ExpandedVisual = {
   src: string;
   alt: string;
   caption: string;
+  presentation?: "desktop" | "mobile";
 } | null;
+
+type CaseStudyVisualImage = NonNullable<
+  NonNullable<CaseStudy["visualEvidence"]>["groups"][number]["images"][number]
+>;
+
+function VisualPreview({
+  image,
+  visualId,
+  onExpand,
+}: {
+  image: CaseStudyVisualImage;
+  visualId: string;
+  onExpand: (payload: ExpandedVisual) => void;
+}) {
+  const [aspectRatio, setAspectRatio] = useState<string>(
+    image.presentation === "mobile" ? "390 / 844" : "1536 / 1024",
+  );
+
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        onExpand({
+          id: visualId,
+          src: image.src,
+          alt: image.alt,
+          caption: image.caption,
+          presentation: image.presentation,
+        });
+      }}
+      className="group block w-full cursor-zoom-in overflow-hidden rounded-xl border border-border bg-white text-left shadow-[0_18px_50px_rgba(15,23,42,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--premium-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      aria-label={`Open larger image: ${image.caption}`}
+    >
+      <motion.img
+        layoutId={visualId}
+        src={image.src}
+        alt={image.alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={(event) => {
+          const { naturalWidth, naturalHeight } = event.currentTarget;
+          if (naturalWidth && naturalHeight) {
+            setAspectRatio(`${naturalWidth} / ${naturalHeight}`);
+          }
+        }}
+        style={{ aspectRatio }}
+        className="w-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.008]"
+      />
+    </button>
+  );
+}
 
 export function CaseStudyPage({
   study,
@@ -24,14 +76,52 @@ export function CaseStudyPage({
 }: CaseStudyPageProps) {
   const [expandedVisual, setExpandedVisual] =
     useState<ExpandedVisual>(null);
+  const [showAllVisualEvidence, setShowAllVisualEvidence] =
+    useState(false);
+  const expandedVisualCloseRef = useRef<HTMLButtonElement>(null);
+  const expandedVisualTriggerRef = useRef<HTMLElement | null>(null);
+  const prototypeHref = study.prototypeUrl
+    ? /^https?:\/\//i.test(study.prototypeUrl)
+      ? study.prototypeUrl
+      : `${import.meta.env.BASE_URL}${study.prototypeUrl.replace(/^\/+/, "")}`
+    : undefined;
+
+  const visualEvidenceGroups = study.visualEvidence
+    ? showAllVisualEvidence || !study.visualEvidence.initialGroups
+      ? study.visualEvidence.groups
+      : study.visualEvidence.groups.slice(0, study.visualEvidence.initialGroups)
+    : [];
+
+  useEffect(() => {
+    setShowAllVisualEvidence(false);
+  }, [study.slug]);
+
   useEffect(() => {
     if (!expandedVisual) {
       return;
     }
 
+    expandedVisualTriggerRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      expandedVisualCloseRef.current?.focus();
+    });
+
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setExpandedVisual(null);
+        return;
+      }
+
+      // The expanded-image dialog currently has one interactive control.
+      // Keep keyboard focus inside the modal instead of allowing it to
+      // move to the page behind the overlay.
+      if (event.key === "Tab") {
+        event.preventDefault();
+        expandedVisualCloseRef.current?.focus();
       }
     }
 
@@ -39,8 +129,11 @@ export function CaseStudyPage({
     document.body.style.overflow = "hidden";
 
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      expandedVisualTriggerRef.current?.focus();
+      expandedVisualTriggerRef.current = null;
     };
   }, [expandedVisual]);
 
@@ -69,6 +162,20 @@ export function CaseStudyPage({
             </button>
           ) : null}
 
+          {study.brandLogo ? (
+            <div className="mb-7">
+              <img
+                src={study.brandLogo}
+                alt={study.brandLogoAlt ?? `${study.company} logo`}
+                width={178}
+                height={51}
+                loading="eager"
+                decoding="async"
+                className="h-auto w-[178px] rounded-lg border border-white/10 shadow-sm"
+              />
+            </div>
+          ) : null}
+
           <p className="mb-6 text-sm font-medium uppercase tracking-wider text-[var(--premium-accent)]">
             {study.category}
           </p>
@@ -83,7 +190,7 @@ export function CaseStudyPage({
 
           {study.prototypeUrl ? (
             <a
-              href={`${import.meta.env.BASE_URL}${study.prototypeUrl.replace(/^\/+/, "")}`}
+              href={prototypeHref}
               target="_blank"
               rel="noreferrer"
               className="mt-8 inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--premium-accent)] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--premium-accent)]"
@@ -921,7 +1028,7 @@ export function CaseStudyPage({
                   </p>
 
                   <h3 className="mb-6 text-xl font-normal tracking-[-0.01em]">
-                    Organized around platforms
+                    Existing information model
                   </h3>
 
                   <ul className="space-y-3">
@@ -961,7 +1068,7 @@ export function CaseStudyPage({
                   </p>
 
                   <h3 className="mb-6 text-xl font-normal tracking-[-0.01em]">
-                    Organized around student goals
+                    Proposed information model
                   </h3>
 
                   <ul className="grid gap-3 sm:grid-cols-2">
@@ -1258,7 +1365,7 @@ export function CaseStudyPage({
               </motion.div>
 
               <div className="mt-14 space-y-16">
-                {study.visualEvidence.groups.map(
+                {visualEvidenceGroups.map(
                   (group, groupIndex) => (
                     <section
                       key={group.title}
@@ -1323,6 +1430,131 @@ export function CaseStudyPage({
                               /,\s*desktop\.?$/i,
                               "",
                             );
+                          const hasDesktop = pair.some(
+                            (image) => image.presentation === "desktop",
+                          );
+                          const hasMobile = pair.some(
+                            (image) => image.presentation === "mobile",
+                          );
+
+                          if (pair.length === 1) {
+                            const image = pair[0];
+                            const visualId = `${study.slug}-${groupIndex}-${pairIndex}-single`;
+                            const isMobile = image.presentation === "mobile";
+                            const singleTitle = image.caption.replace(
+                              /,\s*(desktop|mobile)\.?$/i,
+                              "",
+                            );
+
+                            return (
+                              <motion.figure
+                                key={visualId}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, amount: 0.12 }}
+                                transition={{
+                                  duration: 0.6,
+                                  delay: Math.min(pairIndex * 0.08, 0.24),
+                                  ease: "easeOut",
+                                }}
+                                className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+                              >
+                                <figcaption className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4 md:px-6">
+                                  <span className="text-base font-medium text-foreground">
+                                    {singleTitle}
+                                  </span>
+                                  <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                                    {isMobile ? "Mobile view" : "Desktop view"}
+                                  </span>
+                                </figcaption>
+
+                                <div className="bg-background p-4 sm:p-6 lg:p-8">
+                                  <div
+                                    className={
+                                      isMobile
+                                        ? "mx-auto w-full max-w-[310px]"
+                                        : "min-w-0"
+                                    }
+                                  >
+                                    <div className="mb-3 flex justify-end">
+                                      <span className="text-xs text-muted-foreground">
+                                        Select to enlarge
+                                      </span>
+                                    </div>
+
+                                    <VisualPreview
+                                      image={image}
+                                      visualId={visualId}
+                                      onExpand={(payload) =>
+                                        setExpandedVisual(payload)
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                              </motion.figure>
+                            );
+                          }
+
+                          if (!hasDesktop || !hasMobile) {
+                            return (
+                              <motion.figure
+                                key={`${study.slug}-${groupIndex}-${pairIndex}-same-format`}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, amount: 0.12 }}
+                                transition={{
+                                  duration: 0.6,
+                                  delay: Math.min(pairIndex * 0.08, 0.24),
+                                  ease: "easeOut",
+                                }}
+                                className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+                              >
+                                <figcaption className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4 md:px-6">
+                                  <span className="text-base font-medium text-foreground">
+                                    {pairTitle}
+                                  </span>
+                                  <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                                    Product states
+                                  </span>
+                                </figcaption>
+
+                                <div className="space-y-8 bg-background p-4 sm:p-6 lg:p-8">
+                                  {pair.map((image, imageIndex) => {
+                                    const visualId = `${study.slug}-${groupIndex}-${pairIndex}-same-${imageIndex}`;
+                                    const isMobile = image.presentation === "mobile";
+
+                                    return (
+                                      <div
+                                        key={visualId}
+                                        className={
+                                          isMobile
+                                            ? "mx-auto w-full max-w-[310px]"
+                                            : "min-w-0"
+                                        }
+                                      >
+                                        <div className="mb-3 flex items-center justify-between gap-3">
+                                          <span className="text-xs font-semibold uppercase tracking-wider text-[var(--premium-accent)]">
+                                            {String(imageIndex + 1).padStart(2, "0")}
+                                          </span>
+                                          <span className="text-xs text-muted-foreground">
+                                            Select to enlarge
+                                          </span>
+                                        </div>
+
+                                        <VisualPreview
+                                          image={image}
+                                          visualId={visualId}
+                                          onExpand={(payload) =>
+                                            setExpandedVisual(payload)
+                                          }
+                                        />
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </motion.figure>
+                            );
+                          }
 
                           return (
                             <motion.figure
@@ -1376,41 +1608,21 @@ export function CaseStudyPage({
                                         <div className="mb-3 flex items-center justify-between gap-3">
                                           <span className="text-xs font-semibold uppercase tracking-wider text-[var(--premium-accent)]">
                                             {isMobile
-                                              ? "Mobile · 390 px"
-                                              : "Desktop · 1440 px"}
+                                              ? "Mobile view"
+                                              : "Desktop view"}
                                           </span>
                                           <span className="text-xs text-muted-foreground">
                                             Select to enlarge
                                           </span>
                                         </div>
 
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setExpandedVisual({
-                                              id: visualId,
-                                              src: image.src,
-                                              alt: image.alt,
-                                              caption:
-                                                image.caption,
-                                            });
-                                          }}
-                                          className="group block w-full cursor-zoom-in overflow-hidden rounded-xl border border-border bg-white text-left shadow-[0_18px_50px_rgba(15,23,42,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--premium-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                                          aria-label={`Open larger image: ${image.caption}`}
-                                        >
-                                          <motion.img
-                                            layoutId={visualId}
-                                            src={image.src}
-                                            alt={image.alt}
-                                            loading="lazy"
-                                            decoding="async"
-                                            className={
-                                              isMobile
-                                                ? "aspect-[390/844] w-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.008]"
-                                                : "aspect-[45/32] w-full object-contain object-top transition-transform duration-500 group-hover:scale-[1.008]"
-                                            }
-                                          />
-                                        </button>
+                                    <VisualPreview
+                                      image={image}
+                                      visualId={visualId}
+                                      onExpand={(payload) =>
+                                        setExpandedVisual(payload)
+                                      }
+                                    />
                                       </div>
                                     );
                                   })}
@@ -1423,6 +1635,22 @@ export function CaseStudyPage({
                   ),
                 )}
               </div>
+
+              {study.visualEvidence.initialGroups &&
+              study.visualEvidence.groups.length > study.visualEvidence.initialGroups ? (
+                <div className="mt-12 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowAllVisualEvidence((current) => !current)}
+                    className="inline-flex min-h-11 items-center justify-center rounded-lg border border-border bg-background px-6 py-3 font-medium text-foreground transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
+                    aria-expanded={showAllVisualEvidence}
+                  >
+                    {showAllVisualEvidence
+                      ? "Show the featured screens only"
+                      : study.visualEvidence.expandLabel ?? "View the complete gallery"}
+                  </button>
+                </div>
+              ) : null}
             </div>
           </section>
         ) : null}
@@ -1466,7 +1694,7 @@ export function CaseStudyPage({
                   </p>
 
                   <h3 className="text-2xl font-normal leading-[1.2] tracking-[-0.02em] md:text-3xl">
-                    A reusable foundation for consistent student
+                    A reusable foundation for consistent product
                     experiences
                   </h3>
                 </div>
@@ -1517,8 +1745,8 @@ export function CaseStudyPage({
                     </p>
 
                     <h3 className="text-2xl font-normal leading-[1.2] tracking-[-0.02em] md:text-3xl">
-                      Components supporting the redesigned
-                      journey
+                      Components supporting the product
+                      experience
                     </h3>
                   </div>
 
@@ -1693,7 +1921,7 @@ export function CaseStudyPage({
                   </p>
 
                   <h3 className="text-2xl font-normal leading-[1.2] tracking-[-0.02em] md:text-3xl">
-                    Treating one failed path as a design signal
+                    Turning observed friction into design decisions
                   </h3>
                 </div>
 
@@ -1735,16 +1963,19 @@ export function CaseStudyPage({
               <div className="mt-16">
                 <div className="mb-7 max-w-3xl">
                   <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--premium-accent)]">
-                    Final mobile revalidation
+                    Task-level results
                   </p>
 
                   <h3 className="text-2xl font-normal leading-[1.2] tracking-[-0.02em] md:text-3xl">
-                    Two entry points, validated separately
+                    What each tested workflow revealed
                   </h3>
                 </div>
 
                 <div className="overflow-x-auto rounded-xl border border-border bg-card">
                   <table className="w-full min-w-[760px] border-collapse text-left">
+                    <caption className="sr-only">
+                      Usability task results
+                    </caption>
                     <thead className="bg-muted/50">
                       <tr>
                         <th
@@ -1835,7 +2066,7 @@ export function CaseStudyPage({
                   aria-label="Usability gate conclusion"
                 >
                   <p className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--premium-accent)]">
-                    Usability gate · APPROVED
+                    Usability evidence
                   </p>
 
                   <p className="text-lg leading-[1.8] text-foreground">
@@ -1853,10 +2084,10 @@ export function CaseStudyPage({
                     ease: "easeOut",
                   }}
                   className="rounded-2xl border border-border bg-background p-6 md:p-8"
-                  aria-label="Institutional governance status"
+                  aria-label="Governance status"
                 >
                   <p className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Publication · NO-GO
+                    Governance status
                   </p>
 
                   <p className="leading-[1.8] text-foreground">
@@ -2510,7 +2741,7 @@ export function CaseStudyPage({
           <motion.div
             role="dialog"
             aria-modal="true"
-            aria-label="Expanded case study visual"
+            aria-label={`Expanded image: ${expandedVisual.caption}`}
             className="fixed inset-0 z-50 bg-background/95 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -2534,6 +2765,7 @@ export function CaseStudyPage({
                 </div>
 
                 <button
+                  ref={expandedVisualCloseRef}
                   type="button"
                   onClick={() => setExpandedVisual(null)}
                   className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full border border-border px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--premium-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -2547,12 +2779,22 @@ export function CaseStudyPage({
                 className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden bg-muted/30 px-4 py-6 md:px-8 md:py-8"
                 onClick={(event) => event.stopPropagation()}
               >
-                <div className="mx-auto w-full max-w-7xl">
+                <div
+                  className={
+                    expandedVisual.presentation === "mobile"
+                      ? "mx-auto flex w-full max-w-7xl justify-center"
+                      : "mx-auto w-full max-w-7xl"
+                  }
+                >
                   <motion.img
                     layoutId={expandedVisual.id}
                     src={expandedVisual.src}
                     alt={expandedVisual.alt}
-                    className="h-auto w-full rounded-2xl border border-border bg-background object-contain shadow-2xl"
+                    className={
+                      expandedVisual.presentation === "mobile"
+                        ? "max-h-[82vh] w-auto max-w-full rounded-2xl border border-border bg-background object-contain shadow-2xl"
+                        : "h-auto w-full rounded-2xl border border-border bg-background object-contain shadow-2xl"
+                    }
                   />
                 </div>
               </div>
