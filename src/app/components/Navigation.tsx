@@ -4,7 +4,7 @@ import {
   motion,
   useReducedMotion,
 } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { FileText, Menu, X } from "lucide-react";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +19,7 @@ export function Navigation() {
     { label: "About", id: "about" },
     { label: "Design Systems", id: "design-system" },
   ];
+  const resumeHref = `${import.meta.env.BASE_URL}graziele-costa-resume.pdf`;
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -85,6 +86,17 @@ export function Navigation() {
                   {item.label}
                 </button>
               ))}
+
+              <a
+                href={resumeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <FileText aria-hidden="true" className="h-4 w-4" />
+                Résumé
+                <span className="sr-only">, opens in a new tab</span>
+              </a>
             </div>
 
             <button
@@ -140,6 +152,17 @@ export function Navigation() {
                   {item.label}
                 </button>
               ))}
+
+              <a
+                href={resumeHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 w-full items-center gap-2 rounded-lg px-4 text-left text-base text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+              >
+                <FileText aria-hidden="true" className="h-5 w-5" />
+                View résumé
+                <span className="sr-only">, opens in a new tab</span>
+              </a>
 
               <button
                 type="button"

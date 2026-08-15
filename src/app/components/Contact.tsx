@@ -4,9 +4,12 @@ import {
   Linkedin,
   ExternalLink,
   ArrowRight,
+  FileText,
 } from "lucide-react";
 
 export function Contact() {
+  const resumeHref = `${import.meta.env.BASE_URL}graziele-costa-resume.pdf`;
+
   return (
     <footer
       id="contact"
@@ -64,7 +67,7 @@ export function Contact() {
             className="mb-16 flex flex-col justify-center gap-4 sm:flex-row"
           >
             <a
-              href="mailto:grazycosttalm@gmail.com?subject=Product%20Design%20opportunity"
+              href="mailto:ohgrazidesigner@gmail.com?subject=Product%20Design%20opportunity"
               className="group flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[var(--premium-accent)] px-8 py-4 text-base font-medium text-white transition-all duration-300 hover:bg-[var(--premium-accent-dark)]"
             >
               <Mail aria-hidden="true" className="h-5 w-5" />
@@ -73,6 +76,18 @@ export function Contact() {
                 aria-hidden="true"
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
               />
+            </a>
+
+            <a
+              href={resumeHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-border px-8 py-4 text-base font-medium transition-all duration-300 hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
+            >
+              <FileText aria-hidden="true" className="h-5 w-5" />
+              View résumé
+              <span className="sr-only">, opens in a new tab</span>
+              <ExternalLink aria-hidden="true" className="h-4 w-4" />
             </a>
 
             <a
