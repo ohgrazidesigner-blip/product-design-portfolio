@@ -21,7 +21,7 @@ export function Navigation() {
     { label: "Design Systems", id: "design-system" },
   ];
   const resumeHref = `${import.meta.env.BASE_URL}graziele-costa-resume.pdf`;
-  const behanceHref = "https://www.behance.net/grazieloliveir6";
+  const behanceHref = "https://www.behance.net/grazieloliveira";
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
