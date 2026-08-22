@@ -192,7 +192,7 @@ export default function App() {
 
         {selectedStudy ? (
           <a
-            href="https://www.behance.net/grazieloliveir6"
+            href="https://www.behance.net/grazieloliveira"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View Behance portfolio, opens in a new tab"
