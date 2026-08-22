@@ -8,6 +8,7 @@ import { CaseStudyPage } from "./components/CaseStudyPage";
 import { DesignSystem } from "./components/DesignSystem";
 import { Process } from "./components/Process";
 import { Contact } from "./components/Contact";
+import { BehanceIcon } from "./components/BehanceIcon";
 import { caseStudies } from "./data/caseStudies";
 
 const CASE_QUERY_PARAMETER = "case";
@@ -188,6 +189,19 @@ export default function App() {
         </a>
 
         {!selectedStudy ? <Navigation /> : null}
+
+        {selectedStudy ? (
+          <a
+            href="https://www.behance.net/grazieloliveir6"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Behance portfolio, opens in a new tab"
+            title="Behance"
+            className="fixed right-6 top-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-background/90 text-muted-foreground shadow-sm backdrop-blur-lg transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)] md:right-12 md:top-8 lg:right-24"
+          >
+            <BehanceIcon className="text-[18px]" />
+          </a>
+        ) : null}
 
         <main
           ref={mainRef}
