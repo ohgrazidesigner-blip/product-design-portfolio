@@ -5,6 +5,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 import { FileText, Menu, X } from "lucide-react";
+import { BehanceIcon } from "./BehanceIcon";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,6 +21,7 @@ export function Navigation() {
     { label: "Design Systems", id: "design-system" },
   ];
   const resumeHref = `${import.meta.env.BASE_URL}graziele-costa-resume.pdf`;
+  const behanceHref = "https://www.behance.net/grazieloliveir6";
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -97,6 +99,17 @@ export function Navigation() {
                 Résumé
                 <span className="sr-only">, opens in a new tab</span>
               </a>
+
+              <a
+                href={behanceHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View Behance portfolio, opens in a new tab"
+                title="Behance"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted/50 hover:text-[var(--premium-accent)]"
+              >
+                <BehanceIcon className="text-[18px]" />
+              </a>
             </div>
 
             <button
@@ -107,26 +120,39 @@ export function Navigation() {
               Contact
             </button>
 
-            <button
-              type="button"
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-navigation"
-              aria-label={
-                isMenuOpen
-                  ? "Close navigation menu"
-                  : "Open navigation menu"
-              }
-              onClick={() =>
-                setIsMenuOpen((current) => !current)
-              }
-              className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)] md:hidden"
-            >
-              {isMenuOpen ? (
-                <X aria-hidden="true" className="h-5 w-5" />
-              ) : (
-                <Menu aria-hidden="true" className="h-5 w-5" />
-              )}
-            </button>
+            <div className="flex items-center gap-2 md:hidden">
+              <a
+                href={behanceHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View Behance portfolio, opens in a new tab"
+                title="Behance"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
+              >
+                <BehanceIcon className="text-[18px]" />
+              </a>
+
+              <button
+                type="button"
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-navigation"
+                aria-label={
+                  isMenuOpen
+                    ? "Close navigation menu"
+                    : "Open navigation menu"
+                }
+                onClick={() =>
+                  setIsMenuOpen((current) => !current)
+                }
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
+              >
+                {isMenuOpen ? (
+                  <X aria-hidden="true" className="h-5 w-5" />
+                ) : (
+                  <Menu aria-hidden="true" className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -161,6 +187,17 @@ export function Navigation() {
               >
                 <FileText aria-hidden="true" className="h-5 w-5" />
                 View résumé
+                <span className="sr-only">, opens in a new tab</span>
+              </a>
+
+              <a
+                href={behanceHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 w-full items-center gap-3 rounded-lg px-4 text-left text-base text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+              >
+                <BehanceIcon className="w-5 text-[18px]" />
+                Behance
                 <span className="sr-only">, opens in a new tab</span>
               </a>
 
