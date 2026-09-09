@@ -9,7 +9,11 @@ import { DesignSystem } from "./components/DesignSystem";
 import { Process } from "./components/Process";
 import { Contact } from "./components/Contact";
 import { BehanceIcon } from "./components/BehanceIcon";
+import { LanguageSelector } from "./components/LanguageSelector";
 import { caseStudies } from "./data/caseStudies";
+import { useLanguage } from "./i18n/LanguageContext";
+import { copy } from "./i18n/copy";
+import { getLocalizedCaseStudies } from "./i18n/localizedCaseStudies";
 
 const CASE_QUERY_PARAMETER = "case";
 
@@ -19,42 +23,40 @@ function getCaseSlugFromUrl(): string | null {
   }
 
   const url = new URL(window.location.href);
-  const slug =
-    url.searchParams.get(CASE_QUERY_PARAMETER)?.trim() ?? "";
+  const slug = url.searchParams.get(CASE_QUERY_PARAMETER)?.trim() ?? "";
 
-  const caseExists = caseStudies.some(
-    (study) => study.slug === slug,
-  );
+  const caseExists = caseStudies.some((study) => study.slug === slug);
 
   return caseExists ? slug : null;
 }
 
 export default function App() {
-  const [selectedCaseSlug, setSelectedCaseSlug] = useState<
-    string | null
-  >(() => getCaseSlugFromUrl());
+  const { language } = useLanguage();
+  const c = copy[language];
+  const localizedCaseStudies = getLocalizedCaseStudies(language);
+  const [selectedCaseSlug, setSelectedCaseSlug] = useState<string | null>(
+    () => getCaseSlugFromUrl(),
+  );
 
   const mainRef = useRef<HTMLElement>(null);
 
-  const previousCaseSlugRef = useRef<string | null>(
-    selectedCaseSlug,
-  );
+  const previousCaseSlugRef = useRef<string | null>(selectedCaseSlug);
 
   const selectedStudy =
-    caseStudies.find(
+    localizedCaseStudies.find(
       (study) => study.slug === selectedCaseSlug,
     ) ?? null;
 
   const selectedStudyIndex = selectedStudy
-    ? caseStudies.findIndex(
+    ? localizedCaseStudies.findIndex(
         (study) => study.slug === selectedStudy.slug,
       )
     : -1;
 
   const nextStudy =
     selectedStudyIndex >= 0
-      ? caseStudies[
-          (selectedStudyIndex + 1) % caseStudies.length
+      ? localizedCaseStudies[
+          (selectedStudyIndex + 1) % localizedCaseStudies.length
         ]
       : undefined;
 
@@ -66,10 +68,7 @@ export default function App() {
     window.addEventListener("popstate", synchronizeCaseWithUrl);
 
     return () => {
-      window.removeEventListener(
-        "popstate",
-        synchronizeCaseWithUrl,
-      );
+      window.removeEventListener("popstate", synchronizeCaseWithUrl);
     };
   }, []);
 
@@ -83,13 +82,9 @@ export default function App() {
         behavior: "auto",
       });
 
-      const animationFrame = window.requestAnimationFrame(
-        () => {
-          mainRef.current?.focus({
-            preventScroll: true,
-          });
-        },
-      );
+      const animationFrame = window.requestAnimationFrame(() => {
+        mainRef.current?.focus({ preventScroll: true });
+      });
 
       return () => {
         window.cancelAnimationFrame(animationFrame);
@@ -108,10 +103,7 @@ export default function App() {
       );
 
       if (caseLink instanceof HTMLElement) {
-        caseLink.focus({
-          preventScroll: true,
-        });
-
+        caseLink.focus({ preventScroll: true });
         caseLink.scrollIntoView({
           block: "center",
           behavior: "auto",
@@ -136,13 +128,11 @@ export default function App() {
   useEffect(() => {
     document.title = selectedStudy
       ? `${selectedStudy.title} | Graziele Costa`
-      : "Graziele Costa | Product Designer";
-  }, [selectedStudy]);
+      : c.app.title;
+  }, [selectedStudy, c.app.title]);
 
   const handleSelectCase = (slug: string) => {
-    const caseExists = caseStudies.some(
-      (study) => study.slug === slug,
-    );
+    const caseExists = caseStudies.some((study) => study.slug === slug);
 
     if (!caseExists) {
       return;
@@ -151,13 +141,10 @@ export default function App() {
     const url = new URL(window.location.href);
 
     url.searchParams.set(CASE_QUERY_PARAMETER, slug);
-
     url.hash = "";
 
     window.history.pushState(
-      {
-        caseSlug: slug,
-      },
+      { caseSlug: slug },
       "",
       `${url.pathname}${url.search}`,
     );
@@ -169,7 +156,6 @@ export default function App() {
     const url = new URL(window.location.href);
 
     url.searchParams.delete(CASE_QUERY_PARAMETER);
-
     url.hash = "case-studies";
 
     window.history.pushState(
@@ -185,22 +171,26 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen bg-background text-foreground antialiased">
         <a href="#main-content" className="skip-link">
-          Skip to main content
+          {c.app.skipToMain}
         </a>
 
         {!selectedStudy ? <Navigation /> : null}
 
         {selectedStudy ? (
-          <a
-            href="https://www.behance.net/grazieloliveira"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View Behance portfolio, opens in a new tab"
-            title="Behance"
-            className="fixed right-6 top-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-background/90 text-muted-foreground shadow-sm backdrop-blur-lg transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)] md:right-12 md:top-8 lg:right-24"
-          >
-            <BehanceIcon className="text-[18px]" />
-          </a>
+          <div className="fixed right-6 top-6 z-40 flex items-center gap-2 md:right-12 md:top-8 lg:right-24">
+            <a
+              href="https://www.behance.net/grazieloliveira"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={c.app.behanceAria}
+              title="Behance"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-background/90 text-muted-foreground shadow-sm backdrop-blur-lg transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
+            >
+              <BehanceIcon className="text-[18px]" />
+            </a>
+
+            <LanguageSelector />
+          </div>
         ) : null}
 
         <main
@@ -223,9 +213,7 @@ export default function App() {
           ) : (
             <>
               <Hero />
-
               <CaseStudies onSelectCase={handleSelectCase} />
-
               <About />
               <DesignSystem />
               <Process />
