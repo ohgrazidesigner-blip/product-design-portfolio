@@ -133,7 +133,7 @@ export function Navigation() {
               <button
                 type="button"
                 aria-expanded={isMenuOpen}
-                aria-controls="tablet-navigation"
+                aria-controls="responsive-navigation"
                 aria-label={
                   isMenuOpen
                     ? c.navigation.closeMenu
@@ -153,12 +153,23 @@ export function Navigation() {
             </div>
 
             <div className="flex items-center gap-2 md:hidden">
+              <a
+                href={behanceHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={c.app.behanceAria}
+                title="Behance"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted/50 hover:text-[var(--premium-accent)]"
+              >
+                <BehanceIcon className="text-[18px]" />
+              </a>
+
               <LanguageSelector compact />
 
               <button
                 type="button"
                 aria-expanded={isMenuOpen}
-                aria-controls="mobile-navigation"
+                aria-controls="responsive-navigation"
                 aria-label={
                   isMenuOpen
                     ? c.navigation.closeMenu
@@ -183,7 +194,7 @@ export function Navigation() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            id="mobile-navigation"
+            id="responsive-navigation"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
