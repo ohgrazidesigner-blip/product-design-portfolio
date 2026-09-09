@@ -50,12 +50,12 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="mt-8 flex flex-wrap gap-4"
+            className="mt-8 flex flex-col gap-4 md:flex-row md:flex-wrap"
           >
             <button
               type="button"
               onClick={() => scrollToSection("case-studies")}
-              className="group flex items-center gap-2 rounded-lg bg-[var(--premium-accent)] px-8 py-4 text-base font-medium text-white transition-all duration-300 hover:bg-[var(--premium-accent-dark)]"
+              className="group flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--premium-accent)] px-8 py-4 text-base font-medium text-white transition-all duration-300 hover:bg-[var(--premium-accent-dark)] md:w-auto"
             >
               {c.workCta}
               <ArrowRight
@@ -67,7 +67,7 @@ export function Hero() {
             <button
               type="button"
               onClick={() => scrollToSection("about")}
-              className="rounded-lg border border-border px-8 py-4 text-base font-medium transition-all duration-300 hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
+              className="w-full rounded-lg border border-border px-8 py-4 text-base font-medium transition-all duration-300 hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)] md:w-auto"
             >
               {c.aboutCta}
             </button>
