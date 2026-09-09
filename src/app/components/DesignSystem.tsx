@@ -1,34 +1,14 @@
 import { motion } from "motion/react";
 import { Box, Palette, Shield, GitBranch } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageContext";
+import { copy } from "../i18n/copy";
 
-const systemPractices = [
-  {
-    icon: Box,
-    title: "Reusable product patterns",
-    description:
-      "I identify repeated structures across workflows and turn them into reusable patterns with defined anatomy, variants, states, and behavior.",
-  },
-  {
-    icon: Palette,
-    title: "Semantic foundations",
-    description:
-      "I organize color, typography, spacing, and interface decisions through semantic foundations that preserve meaning across different contexts.",
-  },
-  {
-    icon: Shield,
-    title: "States and accessibility",
-    description:
-      "I account for focus, contrast, responsiveness, loading, errors, empty states, permissions, and recovery, not only the ideal path.",
-  },
-  {
-    icon: GitBranch,
-    title: "Design-to-code consistency",
-    description:
-      "I align component naming, properties, responsive behavior, and interaction rules between design decisions and coded prototypes.",
-  },
-];
+const practiceIcons = [Box, Palette, Shield, GitBranch];
 
 export function DesignSystem() {
+  const { language } = useLanguage();
+  const c = copy[language].designSystem;
+
   return (
     <section
       id="design-system"
@@ -39,70 +19,66 @@ export function DesignSystem() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: 0.6,
-            ease: "easeOut",
-          }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <p className="mb-6 text-sm font-medium uppercase tracking-wider text-[var(--premium-accent)]">
-            Design systems
+            {c.eyebrow}
           </p>
 
           <div className="mb-16 grid gap-12 md:grid-cols-[1.05fr_0.95fr]">
             <div>
               <h2 className="max-w-2xl text-4xl font-normal leading-[1.08] tracking-[-0.02em] md:text-5xl lg:text-[56px]">
-                Build consistency without limiting the product
+                {c.title}
               </h2>
             </div>
 
             <div className="max-w-[600px] space-y-6 text-lg leading-[1.7] text-muted-foreground">
-              <p>
-                Across these product studies, I use systems
-                thinking to connect individual interface
-                decisions with the wider workflow and the
-                product decisions it needs to support.
-              </p>
-
-              <p>
-                The goal is not to create a large component
-                library. It is to reduce unnecessary variation,
-                make behavior predictable, and help the product
-                evolve without losing clarity.
-              </p>
+              {c.paragraphs.map((paragraph: string) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
           </div>
         </motion.div>
 
         <div className="grid gap-8 md:grid-cols-2">
-          {systemPractices.map((practice, index) => (
-            <motion.div
-              key={practice.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                duration: 0.6,
-                delay: Math.min(index * 0.08, 0.24),
-                ease: "easeOut",
-              }}
-              className="group rounded-xl border border-border bg-card p-8 transition-colors duration-300 hover:border-[var(--premium-accent)]/60"
-            >
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--premium-accent)]/10 transition-colors duration-300 group-hover:bg-[var(--premium-accent)]/20">
-                <practice.icon
-                  aria-hidden="true"
-                  className="h-6 w-6 text-[var(--premium-accent)]"
-                />
-              </div>
+          {c.practices.map(
+            (
+              practice: { title: string; description: string },
+              index: number,
+            ) => {
+              const PracticeIcon = practiceIcons[index];
 
-              <h3 className="mb-3 text-xl font-normal leading-[1.25] tracking-[-0.01em] text-foreground">
-                {practice.title}
-              </h3>
+              return (
+                <motion.div
+                  key={practice.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: Math.min(index * 0.08, 0.24),
+                    ease: "easeOut",
+                  }}
+                  className="group rounded-xl border border-border bg-card p-8 transition-colors duration-300 hover:border-[var(--premium-accent)]/60"
+                >
+                  <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--premium-accent)]/10 transition-colors duration-300 group-hover:bg-[var(--premium-accent)]/20">
+                    <PracticeIcon
+                      aria-hidden="true"
+                      className="h-6 w-6 text-[var(--premium-accent)]"
+                    />
+                  </div>
 
-              <p className="text-base leading-[1.7] text-muted-foreground">
-                {practice.description}
-              </p>
-            </motion.div>
-          ))}
+                  <h3 className="mb-3 text-xl font-normal leading-[1.25] tracking-[-0.01em] text-foreground">
+                    {practice.title}
+                  </h3>
+
+                  <p className="text-base leading-[1.7] text-muted-foreground">
+                    {practice.description}
+                  </p>
+                </motion.div>
+              );
+            },
+          )}
         </div>
       </div>
     </section>
