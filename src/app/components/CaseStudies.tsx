@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
 import { ArrowRight, Layers3 } from "lucide-react";
-import { caseStudies } from "../data/caseStudies";
+import { useLanguage } from "../i18n/LanguageContext";
+import { copy } from "../i18n/copy";
+import { getLocalizedCaseStudies } from "../i18n/localizedCaseStudies";
 
 type CaseStudiesProps = {
   onSelectCase?: (slug: string) => void;
@@ -19,17 +21,15 @@ function createCaseHref(slug: string) {
   return `${url.pathname}${url.search}`;
 }
 
-const studyFlows: Record<string, string[]> = {
-  "ledgerflow-accounting-platform": [
-    "Context",
-    "Evidence",
-    "Close",
-  ],
-};
+export function CaseStudies({ onSelectCase }: CaseStudiesProps) {
+  const { language } = useLanguage();
+  const c = copy[language].caseStudies;
+  const studies = getLocalizedCaseStudies(language);
 
-export function CaseStudies({
-  onSelectCase,
-}: CaseStudiesProps) {
+  const studyFlows: Record<string, string[]> = {
+    "ledgerflow-accounting-platform": c.ledgerFlow,
+  };
+
   return (
     <section
       id="case-studies"
@@ -41,36 +41,27 @@ export function CaseStudies({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: 0.6,
-            ease: "easeOut",
-          }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <p className="mb-6 text-sm font-medium uppercase tracking-wider text-[var(--premium-accent)]">
-            Selected work
+            {c.eyebrow}
           </p>
 
           <h2
             id="case-studies-title"
             className="mb-6 max-w-3xl text-4xl font-normal leading-[1.08] tracking-[-0.02em] md:text-5xl lg:text-[56px]"
           >
-            Selected projects
+            {c.title}
           </h2>
 
           <p className="mb-16 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Three independent studies show how I approach
-            complexity at different layers: building safer multi-company
-            accounting operations for Brazilian teams, designing
-            evidence-grounded AI for research synthesis, and orienting
-            students across a fragmented ecosystem. Each case separates
-            completed design decisions from validation still required.
+            {c.description}
           </p>
         </motion.div>
 
         <div className="grid items-stretch gap-6 md:grid-cols-2 md:gap-8 xl:grid-cols-3">
-          {caseStudies.map((study, index) => {
-            const previewImage =
-              study.visualEvidence?.groups[0]?.images[0];
+          {studies.map((study, index) => {
+            const previewImage = study.visualEvidence?.groups[0]?.images[0];
 
             return (
               <motion.article
@@ -102,34 +93,27 @@ export function CaseStudies({
                   <div className="mb-6 overflow-hidden rounded-xl border border-border bg-muted/30 p-2">
                     <div className="flex aspect-[16/10] min-w-0 flex-col justify-between rounded-lg border border-border bg-background p-4 sm:p-6">
                       <div className="flex items-center gap-2 text-sm font-medium text-[var(--premium-accent)]">
-                        <Layers3
-                          aria-hidden="true"
-                          className="h-4 w-4"
-                        />
-                        Independent product study
+                        <Layers3 aria-hidden="true" className="h-4 w-4" />
+                        {c.independentStudy}
                       </div>
 
                       <div className="flex min-w-0 items-center gap-1 sm:gap-2">
-                        {(
-                          studyFlows[study.slug] ?? [
-                            "Understand",
-                            "Structure",
-                            "Validate",
-                          ]
-                        ).map((step, stepIndex, steps) => (
-                          <div key={step} className="contents">
-                            <span className="min-w-0 flex-1 rounded-md border border-border bg-card px-1 py-2 text-center text-[10px] font-medium leading-tight text-foreground sm:px-3 sm:py-3 sm:text-xs">
-                              {step}
-                            </span>
+                        {(studyFlows[study.slug] ?? c.defaultFlow).map(
+                          (step: string, stepIndex: number, steps: string[]) => (
+                            <div key={step} className="contents">
+                              <span className="min-w-0 flex-1 rounded-md border border-border bg-card px-1 py-2 text-center text-[10px] font-medium leading-tight text-foreground sm:px-3 sm:py-3 sm:text-xs">
+                                {step}
+                              </span>
 
-                            {stepIndex < steps.length - 1 ? (
-                              <ArrowRight
-                                aria-hidden="true"
-                                className="h-3 w-3 shrink-0 text-muted-foreground sm:h-4 sm:w-4"
-                              />
-                            ) : null}
-                          </div>
-                        ))}
+                              {stepIndex < steps.length - 1 ? (
+                                <ArrowRight
+                                  aria-hidden="true"
+                                  className="h-3 w-3 shrink-0 text-muted-foreground sm:h-4 sm:w-4"
+                                />
+                              ) : null}
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
                   </div>
@@ -159,9 +143,7 @@ export function CaseStudies({
                 <div className="mt-auto border-t border-border pt-5">
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
                     <span>{study.role}</span>
-
                     <span aria-hidden="true">·</span>
-
                     <span>{study.year}</span>
                   </div>
 
@@ -186,10 +168,10 @@ export function CaseStudies({
                       event.preventDefault();
                       onSelectCase(study.slug);
                     }}
-                    aria-label={`View case study: ${study.title}`}
+                    aria-label={`${c.viewCaseAria}: ${study.title}`}
                     className="mt-6 inline-flex min-h-11 items-center gap-2 font-medium text-[var(--premium-accent)] hover:text-[var(--premium-accent-dark)]"
                   >
-                    View case study
+                    {c.viewCase}
                     <span aria-hidden="true">→</span>
                   </a>
                 </div>
