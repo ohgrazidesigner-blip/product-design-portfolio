@@ -1,8 +1,12 @@
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageContext";
+import { copy } from "../i18n/copy";
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const c = copy[language].hero;
 
   const scrollBehavior: ScrollBehavior = shouldReduceMotion
     ? "auto"
@@ -28,22 +32,18 @@ export function Hero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <p className="mb-6 text-lg font-normal text-muted-foreground md:text-xl">
-            Hi, I’m Graziele Costa.
+            {c.eyebrow}
           </p>
 
           <h1 className="max-w-7xl text-4xl font-normal leading-[1.08] tracking-[-0.03em] sm:text-5xl md:text-6xl lg:text-7xl">
-            I simplify fragmented workflows{" "}
+            {c.headlineStart}{" "}
             <span className="block bg-gradient-to-r from-[var(--premium-accent)] to-[var(--premium-accent-light)] bg-clip-text text-transparent">
-              with clear, scalable product systems.
+              {c.headlineAccent}
             </span>
           </h1>
 
           <p className="mt-8 max-w-[640px] text-lg leading-[1.7] text-muted-foreground">
-            I’m a Product Designer based in Salvador, Brazil. I
-            connect information architecture, UX/UI, and design
-            systems to make complex B2B, education, and
-            financial products easier to understand, use, and
-            evolve.
+            {c.description}
           </p>
 
           <motion.div
@@ -57,7 +57,7 @@ export function Hero() {
               onClick={() => scrollToSection("case-studies")}
               className="group flex items-center gap-2 rounded-lg bg-[var(--premium-accent)] px-8 py-4 text-base font-medium text-white transition-all duration-300 hover:bg-[var(--premium-accent-dark)]"
             >
-              View selected work
+              {c.workCta}
               <ArrowRight
                 aria-hidden="true"
                 className="h-4 w-4 transition-transform group-hover:translate-x-1"
@@ -69,7 +69,7 @@ export function Hero() {
               onClick={() => scrollToSection("about")}
               className="rounded-lg border border-border px-8 py-4 text-base font-medium transition-all duration-300 hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
             >
-              About me
+              {c.aboutCta}
             </button>
           </motion.div>
         </motion.div>
