@@ -5,6 +5,7 @@ import { Hero } from "./components/Hero";
 import { About } from "./components/About";
 import { CaseStudies } from "./components/CaseStudies";
 import { CaseStudyPage } from "./components/CaseStudyPage";
+import { CaseStudyUiTranslation } from "./components/CaseStudyUiTranslation";
 import { DesignSystem } from "./components/DesignSystem";
 import { Process } from "./components/Process";
 import { Contact } from "./components/Contact";
@@ -39,7 +40,6 @@ export default function App() {
   );
 
   const mainRef = useRef<HTMLElement>(null);
-
   const previousCaseSlugRef = useRef<string | null>(selectedCaseSlug);
 
   const selectedStudy =
@@ -200,16 +200,19 @@ export default function App() {
           className="focus:outline-none"
         >
           {selectedStudy ? (
-            <CaseStudyPage
-              study={selectedStudy}
-              nextStudy={nextStudy}
-              onBack={handleBackToWork}
-              onNext={
-                nextStudy
-                  ? () => handleSelectCase(nextStudy.slug)
-                  : undefined
-              }
-            />
+            <>
+              <CaseStudyUiTranslation />
+              <CaseStudyPage
+                study={selectedStudy}
+                nextStudy={nextStudy}
+                onBack={handleBackToWork}
+                onNext={
+                  nextStudy
+                    ? () => handleSelectCase(nextStudy.slug)
+                    : undefined
+                }
+              />
+            </>
           ) : (
             <>
               <Hero />
