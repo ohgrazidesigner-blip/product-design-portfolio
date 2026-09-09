@@ -6,19 +6,24 @@ import {
 } from "motion/react";
 import { FileText, Menu, X } from "lucide-react";
 import { BehanceIcon } from "./BehanceIcon";
+import { LanguageSelector } from "./LanguageSelector";
+import { useLanguage } from "../i18n/LanguageContext";
+import { copy } from "../i18n/copy";
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const { language } = useLanguage();
+  const c = copy[language];
 
   const scrollBehavior: ScrollBehavior = shouldReduceMotion
     ? "auto"
     : "smooth";
 
   const navItems = [
-    { label: "Work", id: "case-studies" },
-    { label: "About", id: "about" },
-    { label: "Design Systems", id: "design-system" },
+    { label: c.navigation.work, id: "case-studies" },
+    { label: c.navigation.about, id: "about" },
+    { label: c.navigation.designSystems, id: "design-system" },
   ];
   const resumeHref = `${import.meta.env.BASE_URL}graziele-costa-resume.pdf`;
   const behanceHref = "https://www.behance.net/grazieloliveira";
@@ -59,7 +64,7 @@ export function Navigation() {
 
   return (
     <motion.nav
-      aria-label="Primary navigation"
+      aria-label={c.navigation.aria}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
@@ -67,17 +72,17 @@ export function Navigation() {
     >
       <div className="border-b border-border bg-background/90 backdrop-blur-lg">
         <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-24">
-          <div className="flex min-h-[76px] items-center justify-between">
+          <div className="flex min-h-[76px] items-center justify-between gap-4">
             <button
               type="button"
-              aria-label="Graziele Costa, back to top"
+              aria-label={c.navigation.backToTop}
               onClick={scrollToTop}
-              className="inline-flex min-h-11 items-center rounded-md px-2 text-sm font-medium transition-colors hover:text-[var(--premium-accent)]"
+              className="inline-flex min-h-11 shrink-0 items-center rounded-md px-2 text-sm font-medium transition-colors hover:text-[var(--premium-accent)]"
             >
               Graziele Costa
             </button>
 
-            <div className="hidden items-center gap-6 md:flex">
+            <div className="hidden items-center gap-4 lg:flex">
               {navItems.map((item) => (
                 <button
                   type="button"
@@ -96,15 +101,17 @@ export function Navigation() {
                 className="inline-flex min-h-11 items-center gap-2 rounded-md px-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 <FileText aria-hidden="true" className="h-4 w-4" />
-                Résumé
-                <span className="sr-only">, opens in a new tab</span>
+                {c.navigation.resume}
+                <span className="sr-only">
+                  {c.navigation.opensNewTab}
+                </span>
               </a>
 
               <a
                 href={behanceHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="View Behance portfolio, opens in a new tab"
+                aria-label={c.app.behanceAria}
                 title="Behance"
                 className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted/50 hover:text-[var(--premium-accent)]"
               >
@@ -112,25 +119,41 @@ export function Navigation() {
               </a>
             </div>
 
-            <button
-              type="button"
-              onClick={() => scrollToSection("contact")}
-              className="hidden min-h-11 items-center justify-center rounded-lg bg-[var(--premium-accent)] px-6 text-sm font-medium text-white transition-all duration-300 hover:bg-[var(--premium-accent-dark)] md:inline-flex"
-            >
-              Contact
-            </button>
+            <div className="hidden shrink-0 items-center gap-2 md:flex">
+              <button
+                type="button"
+                onClick={() => scrollToSection("contact")}
+                className="hidden min-h-11 items-center justify-center rounded-lg bg-[var(--premium-accent)] px-5 text-sm font-medium text-white transition-all duration-300 hover:bg-[var(--premium-accent-dark)] lg:inline-flex"
+              >
+                {c.navigation.contact}
+              </button>
+
+              <LanguageSelector />
+
+              <button
+                type="button"
+                aria-expanded={isMenuOpen}
+                aria-controls="tablet-navigation"
+                aria-label={
+                  isMenuOpen
+                    ? c.navigation.closeMenu
+                    : c.navigation.openMenu
+                }
+                onClick={() =>
+                  setIsMenuOpen((current) => !current)
+                }
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)] lg:hidden"
+              >
+                {isMenuOpen ? (
+                  <X aria-hidden="true" className="h-5 w-5" />
+                ) : (
+                  <Menu aria-hidden="true" className="h-5 w-5" />
+                )}
+              </button>
+            </div>
 
             <div className="flex items-center gap-2 md:hidden">
-              <a
-                href={behanceHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="View Behance portfolio, opens in a new tab"
-                title="Behance"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-[var(--premium-accent)] hover:text-[var(--premium-accent)]"
-              >
-                <BehanceIcon className="text-[18px]" />
-              </a>
+              <LanguageSelector compact />
 
               <button
                 type="button"
@@ -138,8 +161,8 @@ export function Navigation() {
                 aria-controls="mobile-navigation"
                 aria-label={
                   isMenuOpen
-                    ? "Close navigation menu"
-                    : "Open navigation menu"
+                    ? c.navigation.closeMenu
+                    : c.navigation.openMenu
                 }
                 onClick={() =>
                   setIsMenuOpen((current) => !current)
@@ -165,7 +188,7 @@ export function Navigation() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="border-b border-border bg-background/95 px-6 py-5 shadow-sm backdrop-blur-lg md:hidden"
+            className="border-b border-border bg-background/95 px-6 py-5 shadow-sm backdrop-blur-lg lg:hidden"
           >
             <div className="mx-auto flex max-w-7xl flex-col gap-2">
               {navItems.map((item) => (
@@ -186,8 +209,10 @@ export function Navigation() {
                 className="inline-flex min-h-12 w-full items-center gap-2 rounded-lg px-4 text-left text-base text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
               >
                 <FileText aria-hidden="true" className="h-5 w-5" />
-                View résumé
-                <span className="sr-only">, opens in a new tab</span>
+                {c.navigation.viewResume}
+                <span className="sr-only">
+                  {c.navigation.opensNewTab}
+                </span>
               </a>
 
               <a
@@ -198,7 +223,9 @@ export function Navigation() {
               >
                 <BehanceIcon className="w-5 text-[18px]" />
                 Behance
-                <span className="sr-only">, opens in a new tab</span>
+                <span className="sr-only">
+                  {c.navigation.opensNewTab}
+                </span>
               </a>
 
               <button
@@ -206,7 +233,7 @@ export function Navigation() {
                 onClick={() => scrollToSection("contact")}
                 className="mt-2 inline-flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--premium-accent)] px-6 text-base font-medium text-white transition-colors hover:bg-[var(--premium-accent-dark)]"
               >
-                Contact
+                {c.navigation.contact}
               </button>
             </div>
           </motion.div>
