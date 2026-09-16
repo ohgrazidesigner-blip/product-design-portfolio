@@ -1,0 +1,79 @@
+/* v10 · Atelier em mockup de website em todos os ecrãs + estudos independentes documentados */
+.mobile-menu{display:none!important}
+.mockup-disclaimer{position:static;z-index:5;display:block;margin:24px auto 0;text-align:center;font-size:11px;line-height:1.5;color:#645f76;font-weight:600;max-width:620px;padding:0 12px}
+.case-art{height:272px;position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:22px;background:linear-gradient(145deg,#e8e3ff 0%,#f6f4ff 80%);overflow:hidden}
+.case-art.accounting{background:linear-gradient(145deg,#e9ebff 0%,#f4f0ff 85%)}
+.case-meta,.case-foot{display:flex;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:.06em;color:#514875;font-weight:750;text-transform:uppercase}
+.case-foot{letter-spacing:0;text-transform:none;font-weight:600}
+.case-window{position:relative;max-width:420px;width:90%;margin:12px auto;background:#fff;border:1px solid #d6cef1;border-radius:14px;box-shadow:0 18px 36px rgba(66,39,119,.10);overflow:hidden;transform:rotate(-2deg)}
+.case-art.accounting .case-window{transform:rotate(2deg)}
+.case-window-top{display:flex;justify-content:space-between;border-bottom:1px solid #eeebf4;padding:10px 14px;font-size:9px;color:#79738c;letter-spacing:.05em}
+.case-window-body{padding:16px;display:grid;grid-template-columns:1.35fr .65fr;gap:14px;align-items:center;min-height:132px}
+.case-overline{display:block;font-size:9px;font-weight:750;letter-spacing:.08em;color:#8056ee;margin-bottom:8px}
+.case-window-body strong{display:block;font-size:23px;letter-spacing:-.055em;line-height:1.05;color:#211c36}
+.case-line{display:block;background:#dfdaf0;height:5px;width:95%;border-radius:5px;margin-top:12px}.case-line.short{width:67%;margin-top:6px}
+.case-tile{height:90px;display:flex;align-items:flex-end;justify-content:space-between;padding:15px;border-radius:13px;background:linear-gradient(145deg,#7549f6,#c2afff);color:white;font-size:38px;font-weight:800;letter-spacing:-.08em}.case-tile span{font-size:18px;letter-spacing:0}.case-tile.ledger{background:linear-gradient(145deg,#2c2849,#7862c3)}
+.work-copy{display:flex;flex-direction:column;align-items:flex-start;gap:0}.work-copy h3{line-height:1.22}.work-copy p{line-height:1.6}
+.case-link{display:inline-flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding:11px 0 4px;color:#6335d6;font-size:13px;font-weight:800;border-bottom:1px solid #cbb9f9}.case-link:hover{color:#4c22b9;border-color:#4c22b9}
+.concept-note{display:flex;align-items:center;gap:16px;background:#f6f2ff;border:1px solid #e2d9f6;border-radius:20px;padding:20px 24px;margin-top:20px}.concept-note .concept-mark{font-size:25px;color:#7950f5}.concept-note b{font-size:14px;color:var(--ink)}.concept-note p{font-size:12px;margin:4px 0 0}.concept-note a{flex-shrink:0;white-space:nowrap;color:#6034d0;font-size:12px;font-weight:750}
+@media(max-width:960px){.visual{margin-bottom:36px}.case-art{height:248px}}
+@media(max-width:640px){
+  .nav{gap:12px}.nav .brand{min-width:0;flex:0 0 auto;font-size:19px;gap:8px;letter-spacing:-.06em}
+  .nav .brand-mark{flex:0 0 36px;width:36px;height:36px}.nav .brand-word{white-space:nowrap}
+  .nav .button{min-height:42px;width:auto;padding:9px 13px;flex:0 0 auto;white-space:nowrap;font-size:12px;border-radius:13px}
+  .hero{padding:50px 0 54px}.hero-grid{gap:0}.hero-copy .micro{margin-bottom:0}
+  /* A versão mobile apresenta o MESMO mockup de website, sem moldura de telemóvel. */
+  .visual{width:100%;height:auto;min-height:405px;margin-top:56px;margin-bottom:56px;padding-bottom:0;display:grid;align-items:center;overflow:visible}
+  .browser{display:block;width:94%;margin:0 auto;transform:rotate(-3deg);border-radius:16px}
+  .float-card{display:block;right:-1px;bottom:0;width:min(47%,184px);padding:12px 13px;transform:rotate(3deg)}
+  .float-card b{font-size:11px}.float-card p{font-size:10px}.float-card .check{height:20px;width:20px}
+  .blob{width:80%;height:315px;right:6%;top:18px;transform:rotate(-13deg);opacity:.74}
+  .spark.one{top:4px;right:8px}.spark.two{bottom:45px;left:6px}
+  .store{padding:13px}.store-head{padding-bottom:11px}.store-head b{font-size:15px}.store-head small{font-size:6px}
+  .store-hero{min-height:178px;gap:8px;padding-top:12px}.store-left{padding:8px 2px}.store-left strong{font-size:clamp(19px,6vw,26px);margin:9px 0}.store-left span{font-size:8px}.store-left small{font-size:7px}.store-left .mini-btn{font-size:7px;margin-top:12px;padding:7px 8px}.store-art{min-height:170px}.vase{transform:scale(.75)}
+  .store-foot{font-size:7px;margin-top:10px}.mockup-disclaimer{margin-top:22px;font-size:10px;padding:0 8px}
+  .case-art{height:236px;padding:16px}.case-window{width:95%}.case-window-body{min-height:125px}.case-window-body strong{font-size:20px}.case-meta,.case-foot{font-size:9px}
+  .concept-note{align-items:flex-start;flex-wrap:wrap;padding:18px}.concept-note a{margin-left:40px}.work-copy{padding:23px}
+}
+@media(max-width:365px){.nav .brand-word{font-size:17px}.nav .button{font-size:11px;padding:9px 10px}.visual{height:375px;min-height:375px}.float-card{width:49%;bottom:6px}}
+/* v12 · Ajuste pontual de espaçamento: sem aumentar a distância entre secções. */
+/* Legenda fora da sobreposição com o cartão flutuante. */
+@media (min-width: 961px) {
+  .visual {margin-bottom:28px}
+  .float-card {bottom:55px}
+  .mockup-disclaimer {position:absolute;bottom:4px;left:0;right:0;margin:0 auto}
+}
+@media (max-width: 960px) {
+  .section, .contact {padding-top:56px;padding-bottom:56px}
+}
+@media (max-width: 640px) {
+  .hero {padding-top:50px;padding-bottom:40px}
+  .visual {
+    display:block;width:100%;height:auto;min-height:0;
+    margin:28px 0 0;padding:14px 0 0;overflow:visible;
+  }
+  .browser {width:94%;margin:0 auto}
+  .float-card {
+    position:relative;inset:auto;display:block;
+    width:min(47%,184px);margin:-46px 0 0 auto;
+    transform:rotate(3deg);
+  }
+  .mockup-disclaimer {
+    position:relative;bottom:auto;left:auto;right:auto;
+    margin:18px auto 0;padding:0 8px;
+    max-width:360px;line-height:1.45;
+  }
+  .section, .contact {padding-top:54px;padding-bottom:54px}
+}
+@media (max-width:365px) {
+  .visual {height:auto;min-height:0}
+  .float-card {bottom:auto;margin-top:-44px;width:49%}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:0s!important;animation-duration:0s!important}}
+/* Formulário próprio da Vercel: confirmação acessível e campo anti-spam discreto. */
+.hp-field{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.form-feedback{margin-top:18px;padding:15px 17px;border-radius:14px;border:1px solid var(--border);font-size:14px;line-height:1.5}
+.form-feedback[hidden]{display:none}
+.form-feedback.success{background:#f1f9f4;border-color:#a5dab8;color:#175d35}
+.form-feedback.error{background:#fff5f5;border-color:#f0babd;color:#922832}
+.form button[disabled]{opacity:.75;cursor:wait}
