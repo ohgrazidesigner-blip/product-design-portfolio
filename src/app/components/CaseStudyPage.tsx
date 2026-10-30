@@ -195,7 +195,7 @@ export function CaseStudyPage({
               rel="noreferrer"
               className="mt-8 inline-flex min-h-11 items-center justify-center rounded-lg bg-[var(--premium-accent)] px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--premium-accent)]"
             >
-              Explore the interactive prototype
+              {study.prototypeLabel ?? "Explore the interactive prototype"}
               <span aria-hidden="true" className="ml-2">↗</span>
             </a>
           ) : null}

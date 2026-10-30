@@ -1,3 +1,4 @@
+import { getSecretAcaiCase } from '../data/secretAcai';
 import {
   caseStudies,
   type CaseStudy,
@@ -55,6 +56,8 @@ export function getLocalizedCaseStudies(
   }
 
   return caseStudies.map((study) =>
-    deepMerge(study, caseStudyPtBROverrides[study.slug]),
+    study.slug === "secret-acai-sales-operations"
+      ? getSecretAcaiCase(true)
+      : deepMerge(study, caseStudyPtBROverrides[study.slug]),
   );
 }

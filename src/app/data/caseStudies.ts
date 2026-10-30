@@ -1,3 +1,5 @@
+import { getSecretAcaiCase } from './secretAcai';
+
 export type CaseStudyMetric = {
   label: string;
   value: string;
@@ -17,6 +19,7 @@ export type CaseStudy = {
   brandLogo?: string;
   brandLogoAlt?: string;
   prototypeUrl?: string;
+  prototypeLabel?: string;
   dates?: string;
   team?: string;
   tools?: string[];
@@ -2982,11 +2985,11 @@ const caseStudiesInSourceOrder: CaseStudy[] = [
 
 const preferredCaseOrder = [
   "ledgerflow-accounting-platform",
-  "insightflow-research-intelligence",
+  "secret-acai-sales-operations",
   "unifatecie-student-onboarding",
 ];
 
-export const caseStudies: CaseStudy[] = [...caseStudiesInSourceOrder].sort(
+export const caseStudies: CaseStudy[] = [...caseStudiesInSourceOrder.filter(study => study.slug !== "insightflow-research-intelligence"), getSecretAcaiCase()].sort(
   (first, second) =>
     preferredCaseOrder.indexOf(first.slug) -
     preferredCaseOrder.indexOf(second.slug),
