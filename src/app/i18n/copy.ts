@@ -41,7 +41,7 @@ export const copy: Record<PortfolioLanguage, any> = {
       eyebrow: "Selected work",
       title: "Selected projects",
       description:
-        "Three independent studies show how I approach complexity at different layers: building safer multi-company accounting operations for Brazilian teams, designing evidence-grounded AI for research synthesis, and orienting students across a fragmented ecosystem. Each case separates completed design decisions from validation still required.",
+        "Three product design cases explore complex workflows in accounting, factory sales and operations, and student onboarding. Each case explains the context, my contribution, design decisions and the available evidence.",
       independentStudy: "Independent product study",
       defaultFlow: ["Understand", "Structure", "Validate"],
       ledgerFlow: ["Context", "Evidence", "Close"],
@@ -305,7 +305,7 @@ export const copy: Record<PortfolioLanguage, any> = {
       eyebrow: "Projetos selecionados",
       title: "Projetos em destaque",
       description:
-        "Três estudos independentes mostram como abordo a complexidade em diferentes camadas: criando operações contábeis multiempresa mais seguras para equipes brasileiras, projetando IA fundamentada em evidências para síntese de pesquisa e orientando estudantes em um ecossistema fragmentado. Cada case separa decisões de design concluídas das validações que ainda são necessárias.",
+        "Três cases de design de produto exploram fluxos complexos em contabilidade, vendas e operações de uma fábrica e jornada do estudante. Cada case apresenta contexto, minha contribuição, decisões de design e as evidências disponíveis.",
       independentStudy: "Estudo independente de produto",
       defaultFlow: ["Entender", "Estruturar", "Validar"],
       ledgerFlow: ["Contexto", "Evidência", "Fechamento"],
