@@ -86,7 +86,7 @@ export function CaseStudies({ onSelectCase }: CaseStudiesProps) {
                         loading="lazy"
                         decoding="async"
                         className={study.slug === "secret-acai-sales-operations"
-                          ? "aspect-[16/10] w-full bg-background object-cover object-center transition-transform duration-500 group-hover:scale-[1.015]"
+                          ? "aspect-[16/10] w-full bg-[#26102f] object-contain object-center"
                           : "aspect-[16/10] w-full bg-background object-contain object-center p-2 transition-transform duration-500 group-hover:scale-[1.015]"}
                       />
                     </div>
