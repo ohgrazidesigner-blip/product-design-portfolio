@@ -85,7 +85,9 @@ export function CaseStudies({ onSelectCase }: CaseStudiesProps) {
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        className="aspect-[16/10] w-full bg-background object-contain object-center p-2 transition-transform duration-500 group-hover:scale-[1.015]"
+                        className={study.slug === "secret-acai-sales-operations"
+                          ? "aspect-[16/10] w-full bg-background object-cover object-center transition-transform duration-500 group-hover:scale-[1.015]"
+                          : "aspect-[16/10] w-full bg-background object-contain object-center p-2 transition-transform duration-500 group-hover:scale-[1.015]"}
                       />
                     </div>
                   </div>
