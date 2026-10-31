@@ -81,13 +81,11 @@ export function CaseStudies({ onSelectCase }: CaseStudiesProps) {
                   <div className="mb-6 overflow-hidden rounded-xl border border-border bg-muted/30 p-2">
                     <div className="overflow-hidden rounded-lg border border-border bg-background">
                       <img
-                        src={previewImage.src}
+                        src={study.slug === "secret-acai-sales-operations" ? "/assets/cases/secret-acai/dashboard-cover.png" : previewImage.src}
                         alt=""
                         loading="lazy"
                         decoding="async"
-                        className={study.slug === "secret-acai-sales-operations"
-                          ? "aspect-[16/10] w-full bg-[#26102f] object-contain object-center"
-                          : "aspect-[16/10] w-full bg-background object-contain object-center p-2 transition-transform duration-500 group-hover:scale-[1.015]"}
+                        className="aspect-[16/10] w-full bg-background object-contain object-center p-2 transition-transform duration-500 group-hover:scale-[1.015]"
                       />
                     </div>
                   </div>
